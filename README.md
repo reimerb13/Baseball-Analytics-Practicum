@@ -56,6 +56,7 @@ The Fielding2 dataset had 143,046 observations with 19 variables. The 19th varia
 The missing values that existed in the Fielding2 data was imputed with the mean value for each column so that the Fielding2 data
 contained no missing values. 
 
-
+A subset of the Fielding2 dataset was created that looked at the lgID that focused on the AL league. This subset was called 
+Fielding2_AL. 
 
 
