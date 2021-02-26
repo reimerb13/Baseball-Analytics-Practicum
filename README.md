@@ -62,7 +62,14 @@ Fielding2_NL.
 
 The Fielding2_AL and Fielding2_NL datasets were merged together to create an entire new dataset. The dataset was renamed Fielding3.
 
-The Fielding3 data was filtered by specific positions. A subset of the Fielding3 data was created by looking at the POS variable
-that focused on the 1B position. This subset was called Fielding3_1B. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the 3B position. This subset was called Fielding3_3B. 
+The Fielding3 data was filtered by specific positions. A subset of the Fielding3 data was created by looking at the POS variable by corner fielding positions: 1B and 3B. The subset of data that focused on the 1B position was called Fielding3_1B. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the 3B position. This subset was called Fielding3_3B. The Fielding3_1B and Fielding3_3B datasets were merged to create a new dataset that was named Fielding3_Corner.
+
+A subset of the Fielding3 data was created by looking at the POS variable by middle fielding positions: 2B and SS. The subset of data that focused on the 2B position was called Fielding3_2B. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the SS position. This subset was called Fielding3_SS. The Fielding3_2B and Fielding3_SS datasets were merged to create a new dataset that was named Fielding3_Middle.
+
+A subset of the Fielding3 data was created by looking at the POS variable by outfield and catcher positions: OF and C. The subset of data that focused on the OF position was called Fielding3_OF. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the C position. This subset was called Fielding3_C. The Fielding3_OF and Fielding3_C datasets were merged to create a new dataset that was named Fielding3_OFC.
+
+
+
+
 
 
