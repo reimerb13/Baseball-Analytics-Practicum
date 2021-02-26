@@ -68,8 +68,19 @@ A subset of the Fielding3 data was created by looking at the POS variable by mid
 
 A subset of the Fielding3 data was created by looking at the POS variable by outfield and catcher positions: OF and C. The subset of data that focused on the OF position was called Fielding3_OF. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the C position. This subset was called Fielding3_C. The Fielding3_OF and Fielding3_C datasets were merged to create a new dataset that was named Fielding3_OFC.
 
+# Exploratory Data Analysis
 
+There was exploratory data analysis conducted on the following datasets: Fielding2, Fielding2_AL, Fielding2_NL, Fielding3, Fielding3_1B, Fielding3_3B, Fielding3_Corner, Fielding3_2B, Fielding3_SS, Fielding3_Middle, Fielding3_OF, Fielding3_C, and Fielding3_OFC. Summary statistics and histograms were created to determine if any missing values existed in the datasets and how many outliers existed in the histograms. All missing values were imputed with the mean value for each column in the data.
 
+After viewing the histograms of Fielding3_Corner, Fielding3_Middle, and Fielding3_OFC, the outliers were removed from the dataset. 
+
+Before outliers were removed, the Fielding3_Corner dataset contained 27,405 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'x'.
+
+Before outliers were removed, the Fielding3_Corner dataset contained 27,405 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'x'.
+
+Before outliers were removed, the Fielding3_Middle dataset contained 23,966 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'y'.
+
+Before outliers were removed, the Fielding3_OFC dataset contained 38,331 observations. After outliers were removed, the Fielding3_Corner dataset contained 35,527 observations. This new dataset was named 'z'.
 
 
 
