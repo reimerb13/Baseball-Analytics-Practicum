@@ -49,14 +49,20 @@ CS: Number of opponents caught stealing by a catcher
 
 ZR: Zone Rating
 
-# Exploratory Data Analysis
+# Data Preparation
 
 The Fielding dataset was merged with the first and last name of players in the People dataset from the Lahman library.
 The Fielding2 dataset had 143,046 observations with 19 variables. The 19th variable was the name of the players. 
-The missing values that existed in the Fielding2 data was imputed with the mean value for each column so that the Fielding2 data
-contained no missing values. 
 
 A subset of the Fielding2 dataset was created that looked at the lgID that focused on the AL league. This subset was called 
-Fielding2_AL. 
+Fielding2_AL.
+
+A second subset of the Fielding2 dataset was created that looked at the lgID that focused on the nL league. This subset was called 
+Fielding2_NL.
+
+The Fielding2_AL and Fielding2_NL datasets were merged together to create an entire new dataset. The dataset was renamed Fielding3.
+
+The Fielding3 data was filtered by specific positions. A subset of the Fielding3 data was created by looking at the POS variable
+that focused on the 1B position. This subset was called Fielding3_1B. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the 3B position. This subset was called Fielding3_3B. 
 
 
