@@ -17,3 +17,31 @@ teamID: The name of the team (this variable was classified as a factor)
 
 lgID: A factor variable that classified the league a player played in (AA, AL, FL, NL, PL, and UA)
 
+POS: Position of a player (1B, 2B, SS, 3B, C, P, and OF)
+
+G: Number of games a player played
+
+GS: Number of games a player started
+
+InnOuts: Time a player played in the field expressed as outs
+
+PO: Number of putouts a player made
+
+A: Number of assists a player made
+
+E: Numer of errors a player made
+
+DP: Number of double plays a player made
+
+PB: Number of passed balls by the catcher
+
+WP: Number of wild pitches by the catcher
+
+SB: Number of stolen bases by an opposing player off of a catcher
+
+CS: Number of opponents caught stealing by a catcher
+
+ZR: Zone Rating
+
+
+
