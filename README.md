@@ -66,7 +66,7 @@ The Fielding3 data was filtered by specific positions. A subset of the Fielding3
 
 A subset of the Fielding3 data was created by looking at the POS variable by middle fielding positions: 2B and SS. The subset of data that focused on the 2B position was called Fielding3_2B. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the SS position. This subset was called Fielding3_SS. The Fielding3_2B and Fielding3_SS datasets were merged to create a new dataset that was named Fielding3_Middle.
 
-A subset of the Fielding3 data was created by looking at the POS variable by outfield and catcher positions: OF and C. The subset of data that focused on the OF position was called Fielding3_OF. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the C position. This subset was called Fielding3_C. The Fielding3_OF and Fielding3_C datasets were merged to create a new dataset that was named Fielding3_OFC.
+A subset of the Fielding3 data was created by looking at the POS variable by outfield and catcher positions: OF and C. The subset of data that focused on the OF position was called Fielding3_OF. Another subset of the Fielding3 data was created by looking at the POS variable that focused on the C position. This subset was called Fielding3_C. The Fielding3_OF and Fielding3_C datasets were merged to create a new dataset that was named Fielding3_OFC and later renamed OFC.
 
 # Exploratory Data Analysis
 
@@ -74,13 +74,13 @@ There was exploratory data analysis conducted on the following datasets: Fieldin
 
 After viewing the histograms of Fielding3_Corner, Fielding3_Middle, and Fielding3_OFC, the outliers were removed from the dataset. 
 
-Before outliers were removed, the Fielding3_Corner dataset contained 27,405 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'x'.
+Before outliers were removed, the Fielding3_Corner dataset contained 27,405 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'x' and then renamed Corner2.
 
-Before outliers were removed, the Fielding3_Corner dataset contained 27,405 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'x'.
+Before outliers were removed, the Fielding3_Middle dataset contained 23,966 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'y' and then renamed M.
 
-Before outliers were removed, the Fielding3_Middle dataset contained 23,966 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'y'.
+Before outliers were removed, the Fielding3_OFC dataset contained 38,331 observations. After outliers were removed, the Fielding3_Corner dataset contained 35,527 observations. This new dataset was named 'z' and renamed OFC2.
 
-Before outliers were removed, the Fielding3_OFC dataset contained 38,331 observations. After outliers were removed, the Fielding3_Corner dataset contained 35,527 observations. This new dataset was named 'z'.
+# Machine Learning Models
 
-
+Machine learning models were created for Fielding3_Corner, Corner2, Fielding3_Middle, M, OFC, and OFC2. 
 
