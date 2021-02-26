@@ -7,3 +7,13 @@ The data was collected from the Lahman library in R. The data used was the Field
 The Fielding data has 143,046 observations with 18 variables. The classification for the variables included factors, characters,
 and integers. The variables for the Fielding data consist of the following:
 
+playerID: Player ID code
+
+yearID: Year
+
+stint: Player's stint (number of appearances a player made with a team during the season)
+
+teamID: The name of the team (this variable was classified as a factor)
+
+lgID: A factor variable that classified the league a player played in (AA, AL, FL, NL, PL, and UA)
+
