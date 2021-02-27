@@ -92,6 +92,15 @@ Corner Machine Learning Model Results
 |Radial|3,612|3,888|0.82|91.2%|8.8%|
 |Polynomial|3,377|3,727|0.73|86.4%|13.6%|
 
+The results from the Corner machine learning models showed that the results were in good agreement with the models that were created.
+
+Corner 2 Machine Learning Model Results
+
+|SVM Type|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|:-------|---------------------:|---------------------:|----------:|------------:|----------:|
+|Linear|3,442|3,429|0.89|94.2%|5.8%|
+|Radial|3,579|3,113|0.84|91.8%|8.2%|
+|Polynomial|3,299|2,682|0.64|82.0%|18.0%|
 
 
 
