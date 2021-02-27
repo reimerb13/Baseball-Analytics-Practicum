@@ -217,7 +217,7 @@ A third and final machine learning model that was created were Random Forest mod
 
 The Random Forest model for the Corner data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP. 
 
-Corner Random Forest Results
+Corner.rf Random Forest Results
 
 |Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
@@ -227,5 +227,39 @@ Corner Random Forest Results
  
  <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395096-03ae7a00-78d7-11eb-9a26-8e202ca10803.png">
 
+A second Random Forest model was created for the Corner data looking at the POS variable in relation to the G, DP, A, and PO variables.
 
+Corner.rf2 Random Forest Results
+
+|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|3,944|4,002|0.93|96.6%|3.4%|
+
+ The Kappa value is 0.93. This indicates that there is a very good agreement between the model and the results. The Corner.rf2 accuracy rate was a little bit less accurate than the Corner.rf accuracy.
+ 
+ <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395175-80d9ef00-78d7-11eb-95aa-70871eb88536.png">
+
+The Random Forest model for the Corner2 data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP. 
+
+Corner2.rf Random Forest Results
+
+|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|3,676|3,393|0.94|97.0%|3.0%|
+
+The Kappa value is 0.94. This indicates that there is a very good agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO. 
+
+<img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395269-f8a81980-78d7-11eb-9480-37c47b0cb3c3.png">
+
+A second Random Forest model was created for the Corner2 data looking at the POS variable in relation to the G, DP, A, and PO variables.
+
+Corner2.rf2 Random Forest Results
+
+|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|3,667|3,360|0.93|96.3%|3.7%|
+
+ The Kappa value is 0.93. This indicates that there is a very good agreement between the model and the results. The Corner2.rf2 accuracy rate was a little bit less accurate than the Corner2.rf accuracy.
+ 
+ <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395355-5a688380-78d8-11eb-9bbb-027b5e4e9533.png">
 
