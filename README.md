@@ -380,4 +380,8 @@ The CornerG.ts. passed the ADF test and the Box-Ljung test. The next 20 years of
 
 Predictions for CornerG.ts Time Series
 
+|Forecasted Variables|High 80%|High 95%|RMSE|
+|:-------|---------------------:|---------------------:|----------:|
+|Residuals of Corner.ts|86|116|44.5|
+|Games of Corner.ts|89|120|46.1|
 
