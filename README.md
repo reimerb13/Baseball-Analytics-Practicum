@@ -309,3 +309,48 @@ M.rf2 Random Forest Results
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395757-86850400-78da-11eb-9bd5-b749d651c35e.png">
 
+The Random Forest model for the OFC data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP.
+
+OFC.rf Random Forest Results
+
+|Correct C Predictions|Correct OF Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,888|8,201|0.91|96.4%|3.6%|
+
+The Kappa value for this model was 0.91. This would indicate that there is a very good agreement of the results of the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395864-0f9c3b00-78db-11eb-8f4e-b510608f91ef.png">
+
+A second Random Forest model was created for the OFC data looking at the POS variable in relation to the G, InnOuts, A, and PO variables.
+
+OFC.rf2 Random Forest Results
+
+|Correct C Predictions|Correct OF Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,946|8,174|0.92|96.7%|3.3%|
+
+The Kappa value for this model was 0.92. This would indicate that there is a very good agreement of the results in the model. The results for the OFC.rf2 were a little more accurate than the results from the OFC.rf model.
+
+The Random Forest model for the OFC2 data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP.
+
+OFC2.rf Random Forest Results
+
+|Correct C Predictions|Correct OF Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,214|8,028|0.89|96.1%|3.9%|
+
+The Kappa value for this model was 0.89. This would indicate that there is a very good agreement of the results in the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395966-bda7e500-78db-11eb-802e-d46b351a9e50.png">
+
+A second Random Forest model was created for the OFC2 data looking at the POS variable in relation to the G, InnOuts, A, and PO variables.
+
+OFC2.rf2 Random Forest Results
+
+|Correct C Predictions|Correct OF Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,277|7,985|0.90|96.3%|3.7%|
+
+The Kappa value for this model was 0.90. This would indicate that there is a very good agreement of the results in the model. The results from the OFC2.rf2 Random Forest model was marginally better than the results from the OFC2.rf Random Forest model.
+
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109396036-17101400-78dc-11eb-823f-6b42fca42086.png">
