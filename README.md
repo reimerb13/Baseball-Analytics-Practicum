@@ -82,5 +82,7 @@ Before outliers were removed, the Fielding3_OFC dataset contained 38,331 observa
 
 # Machine Learning Models
 
-Machine learning models were created for Fielding3_Corner, Corner2, Fielding3_Middle, M, OFC, and OFC2. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. 
+Machine learning models were created for Fielding3_Corner, Corner2, Fielding3_Middle, M, OFC, and OFC2. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. The Kappa value, accuracy rate, and error rate were calculated for each model based on each dataset.
+
+
 
