@@ -74,7 +74,7 @@ There was exploratory data analysis conducted on the following datasets: Fieldin
 
 After viewing the histograms of Fielding3_Corner, Fielding3_Middle, and Fielding3_OFC, the outliers were removed from the dataset. 
 
-Before outliers were removed, the Fielding3_Corner dataset contained 27,405 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'x' and then renamed Corner2.
+Before outliers were removed, the Fielding3_Corner dataset contained 27,405 observations. The Fielding3_Corner data was renamed Corner. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'x' and then renamed Corner2.
 
 Before outliers were removed, the Fielding3_Middle dataset contained 23,966 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'y' and then renamed M.
 
@@ -82,7 +82,11 @@ Before outliers were removed, the Fielding3_OFC dataset contained 38,331 observa
 
 # Machine Learning Models
 
-Machine learning models were created for Fielding3_Corner, Corner2, Fielding3_Middle, M, OFC, and OFC2. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. The Kappa value, accuracy rate, and error rate were calculated for each model based on each dataset.
+Machine learning models were created for Corner, Corner2, Fielding3_Middle, M, OFC, and OFC2. The variables used to create the models were stint, POS, G, GS, InnOuts, PO, A, E, and DP. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. The Kappa value, accuracy rate, and error rate were calculated for each model based on each dataset.
+
+Corner Machine Learning Model Results
+
+
 
 
 
