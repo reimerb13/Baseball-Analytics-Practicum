@@ -376,12 +376,25 @@ Predictions for Corner Time Series Data
 
 |Forecasted Variables|High 80%|High 95%|RMSE|
 |:-------|---------------------:|---------------------:|----------:|
-|Residuals of Corner.ts|86|116|44.5|
-|Games of Corner.ts|89|120|46.1|
+|Residuals of CornerG.ts|86|116|44.5|
+|Games of CornerG.ts|89|120|46.1|
 |Residuals of CornerPO.ts|880|1,195|461.4|
 |Putouts of CornerPO.ts|395|596|296|
 |Residuals of CornerA.ts|51|70|27.3|
 |Assists of CornerA.ts|133|180|68.2|
 |Residuals of CornerDP.ts|48|65|25.0|
 |Double Plays of CornerDP.ts|39|56|26.4|
+
+Predictions for Corner2 Time Series Data
+
+|Forecasted Variables|High 80%|High 95%|RMSE|
+|:-------|---------------------:|---------------------:|----------:|
+|Residuals of Corner2G.ts|50|66|23.2|
+|Games of Corner2G.ts|68|91|35.3|
+|Residuals of Corner2PO.ts|499|664|242.4|
+|Putouts of Corner2PO.ts|340|513|255.5|
+|Residuals of Corner2A.ts|32|42|15.7|
+|Assists of Corner2A.ts|89|117|41.2|
+|Residuals of Corner2DP.ts|26|34|12.5|
+|Double Plays of Corner2DP.ts|34|51|23.9|
 
