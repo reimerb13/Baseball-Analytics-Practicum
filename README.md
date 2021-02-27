@@ -76,15 +76,15 @@ After viewing the histograms of Fielding3_Corner, Fielding3_Middle, and Fielding
 
 Before outliers were removed, the Fielding3_Corner dataset contained 27,405 observations. The Fielding3_Corner data was renamed Corner. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'x' and then renamed Corner2.
 
-Before outliers were removed, the Fielding3_Middle dataset contained 23,966 observations. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'y' and then renamed M.
+Before outliers were removed, the Fielding3_Middle dataset contained 23,966 observations. The Fielding3_Middle data was renamed Middle. After outliers were removed, the Fielding3_Corner dataset contained 24,302 observations. This new dataset was named 'y' and then renamed M.
 
 Before outliers were removed, the Fielding3_OFC dataset contained 38,331 observations. After outliers were removed, the Fielding3_Corner dataset contained 35,527 observations. This new dataset was named 'z' and renamed OFC2.
 
-# Machine Learning Models
+# Support Vector Machines
 
-Machine learning models were created for Corner, Corner2, Fielding3_Middle, M, OFC, and OFC2. The variables used to create the models were stint, POS, G, GS, InnOuts, PO, A, E, and DP. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. The Kappa value, accuracy rate, and error rate were calculated for each model based on each dataset.
+Machine learning models were created for Corner, Corner2, Middle, M, OFC, and OFC2. The variables used to create the models were stint, POS, G, GS, InnOuts, PO, A, E, and DP. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. The Kappa value, accuracy rate, and error rate were calculated for each model based on each dataset.
 
-Corner Machine Learning Model Results
+Corner SVM Model Results
 
 |SVM Type|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
 |:-------|---------------------:|---------------------:|----------:|------------:|----------:|
@@ -94,7 +94,7 @@ Corner Machine Learning Model Results
 
 The results from the Corner machine learning models showed that the results were in very good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
 
-Corner 2 Machine Learning Model Results
+Corner 2 SVM Model Results
 
 |SVM Type|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
 |:-------|---------------------:|---------------------:|----------:|------------:|----------:|
@@ -104,6 +104,44 @@ Corner 2 Machine Learning Model Results
 
 The results from the Corner2 machine learning models showed that the results were in very good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
 
+Middle SVM Model Results
 
+|SVM Type|Correct 2B Predictions|Correct SS Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|:-------|---------------------:|---------------------:|----------:|------------:|----------:|
+|Linear|3,363|1,616|0.37|69.2%|30.8%|
+|Radial|3,397|1,656|0.39|70.3%|29.7%|
+|Polynomial|3,762|672|0.19|61.7%|38.3%|
+
+The results from the Middle machine learning models showed that the results were in fair agreement with the linear and radial models. The results were in poor agreement with the polynomial model.
+
+M SVM Model Results
+
+|SVM Type|Correct 2B Predictions|Correct SS Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|:-------|---------------------:|---------------------:|----------:|------------:|----------:|
+|Linear|3,202|1,265|0.34|68.2%|31.8%|
+|Radial|3,116|1,415|0.36|69.2%|30.8%|
+|Polynomial|3,493|497|0.16|61.0%|39.0%|
+
+The results from the M machine learning models showed that the results were in fair agreement with the linear and radial models. The results were in poor agreement with the polynomial model.
+
+OFC SVM Model Results
+
+|SVM Type|Correct C Predictions|Correct OF Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|:-------|---------------------:|---------------------:|----------:|------------:|----------:|
+|Linear|2,614|8,222|0.85|94.2%|5.8%|
+|Radial|2,572|8,233|0.84|94.0%|6.0%|
+|Polynomial|2,152|8,249|0.74|90.4%|9.6%|
+
+The results from the OFC machine learning models showed that the results were in really good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
+
+OFC2 SVM Model Results
+
+|SVM Type|Correct C Predictions|Correct OF Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|:-------|---------------------:|---------------------:|----------:|------------:|----------:|
+|Linear|1,959|8,040|0.82|93.8%|6.2%|
+|Radial|1,942|8,054|0.82|93.8%|6.2%|
+|Polynomial|1,588|8,067|0.71|90.6%|9.4%|
+
+The results from the OFC2 machine learning models showed that the results were in really good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
 
 
