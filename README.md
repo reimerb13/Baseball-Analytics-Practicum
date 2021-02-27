@@ -358,16 +358,18 @@ The Kappa value for this model was 0.90. This would indicate that there is a ver
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109396036-17101400-78dc-11eb-823f-6b42fca42086.png">
 
-## Time Series Analysis of Corner and Corner 2 Data
+# Time Series Analysis of Corner and Corner2 Data
 
 A univariate time series analysis was conducted on the four most important variables in the Corner and Corner2 datasets. The four most important variables for Corner and Corner2 from the Random Forest models were G, DP, A, and PO. After a time series was created by each specific variable, the Augmented Dickey-Fuller (ADF) test was conducted to determine if the time series was stationary. Here is the null and alternative hypotheses for the ADF test:
 
 Ho: Time series is non-stationary 
+
 Ha: Time series is stationary
 
 Once the ADF test was completed for the time series, the Box-Ljung test was conducted to determine if the residual values were independently distributed.  Here is the null and alternative hypotheses for the Box-Ljung test:
 
 Ho: The residuals are independently distributed.
+
 Ha: The residuals are not independently distributed.
 
 A forecast of the next 20 years for the residuals was conducted and then the next 20 observations for the data related to the specific variable was predicted.
@@ -398,3 +400,33 @@ Predictions for Corner2 Time Series Data
 |Residuals of Corner2DP.ts|26|34|12.5|
 |Double Plays of Corner2DP.ts|34|51|23.9|
 
+# Time Series Analysis of Middle and M Data
+
+A univariate time series analysis was conducted on the four most important variables in the Corner and Corner2 datasets. The four most important variables for Middle and M from the Random Forest models were E, InnOuts, A, and PO. After a time series was created by each specific variable, the Augmented Dickey-Fuller (ADF) test was conducted to determine if the time series was stationary. Here is the null and alternative hypotheses for the ADF test:
+
+Ho: Time series is non-stationary 
+
+Ha: Time series is stationary
+
+Once the ADF test was completed for the time series, the Box-Ljung test was conducted to determine if the residual values were independently distributed.  Here is the null and alternative hypotheses for the Box-Ljung test:
+
+Ho: The residuals are independently distributed.
+
+Ha: The residuals are not independently distributed.
+
+A forecast of the next 20 years for the residuals was conducted and then the next 20 observations for the data related to the specific variable was predicted.
+
+Results of Middle Time Series Data
+
+|Forecasted Variables|High 80%|High 95%|RMSE|
+|:-------|---------------------:|---------------------:|----------:|
+|Residuals of MiddleG.ts|93|125|45.5|
+|Games of MiddleG.ts|103|136|48.6|
+|Residuals of MiddlePO.ts|216|290|107.5|
+|Putouts of MiddlePO.ts|176|243|99.5|
+|Residuals of MiddleE.ts|26|35|12.3|
+|Errors of MiddleE.ts|18|26|10.9|
+|Residuals of MiddleInnOuts.ts|2,279|3,000|1,059|
+|Inn Outs of MiddleInnOuts.ts|2,396|3,145|1,104.3|
+|Residuals of MiddleA.ts|273|366|135.4|
+|Assists of MiddleA.ts|288|388|146.6|
