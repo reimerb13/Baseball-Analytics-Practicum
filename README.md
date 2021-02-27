@@ -430,3 +430,16 @@ Results of Middle Time Series Data
 |Inn Outs of MiddleInnOuts.ts|2,396|3,145|1,104.3|
 |Residuals of MiddleA.ts|273|366|135.4|
 |Assists of MiddleA.ts|288|388|146.6|
+
+Results of M Time Series Data
+
+|Forecasted Variables|High 80%|High 95%|RMSE|
+|:-------|---------------------:|---------------------:|----------:|
+|Residuals of MG.ts|57|75|26.2|
+|Games of MG.ts|111|148|41.5|
+|Residuals of MPO.ts|130|174|61.3|
+|Putouts of MPO.ts|151|206|81.1|
+|Residuals of MiddleInnOuts.ts|1,320|1,645|473.9|
+|Inn Outs of MiddleInnOuts.ts|2,258|2,933|995.3|
+|Residuals of MA.ts|160|212|76.7|
+|Assists of MA.ts|252|333|120.2|
