@@ -86,7 +86,11 @@ Machine learning models were created for Corner, Corner2, Fielding3_Middle, M, O
 
 Corner Machine Learning Model Results
 
-|--------[Corner Machine Table.docx](https://github.com/reimerb13/Baseball-Analytics-Practicum/files/6054879/Corner.Machine.Table.docx)
+|SVM Type|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|:-------|----------:|---------:|---------:|---------:|----------:|--------:|---------:|
+|Linear|3,647|4,083|0.88|94.0%|6.0%|
+|Radial|3,612|3,888|0.82|91.2%|8.8%|
+|Polynomial|3,377|3,727|0.73|86.4%|13.6%|
 
 
 
