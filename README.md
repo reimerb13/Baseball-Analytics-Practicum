@@ -381,7 +381,7 @@ Predictions for Corner Time Series Data
 |Residuals of CornerPO.ts|880|1,195|461.4|
 |Putouts of CornerPO.ts|395|596|296|
 |Residuals of CornerA.ts|51|70|27.3|
-|Assists of CornerA.ts||133||180||68.2|
+|Assists of CornerA.ts|133|180|68.2|
 |Residuals of CornerDP.ts|48|65|25.0|
 |Double Plays of CornerDP.ts|39|56|26.4|
 
