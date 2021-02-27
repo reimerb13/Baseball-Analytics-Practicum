@@ -331,6 +331,9 @@ OFC.rf2 Random Forest Results
 
 The Kappa value for this model was 0.92. This would indicate that there is a very good agreement of the results in the model. The results for the OFC.rf2 were a little more accurate than the results from the OFC.rf model.
 
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109396089-63f3ea80-78dc-11eb-88d7-96c17d2f2327.png">
+
+
 The Random Forest model for the OFC2 data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP.
 
 OFC2.rf Random Forest Results
