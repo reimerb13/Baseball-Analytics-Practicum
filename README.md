@@ -150,8 +150,8 @@ A second type of machine learning model that was created was a kNN nearest neigh
 
 Corner kNN Model Results
 
-|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|
-|---------------------:|---------------------:|---------------------:|----------:|
+|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,878|4,057|0.93|96.5%|3.5%|
 
 
