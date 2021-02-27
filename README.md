@@ -212,3 +212,20 @@ OFC2 kNN Model Results
 The Kappa value for this model was 0.89. This would indicate that there is a very good agreement of the results in the model.
 
 # Random Forest Models
+
+A third and final machine learning model that was created were Random Forest models. Random Forest models were created for the Corner, Corner2, Middle, M, OFC, and OFC2 datasets. 
+
+The Random Forest model for the Corner data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP. 
+
+Corner Random Forest Results
+
+|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|3,962|4,033|0.94|97.2%|2.8%|
+
+ The Kappa value is 0.94. This indicates that there is a very good agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO. 
+ 
+ <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395096-03ae7a00-78d7-11eb-9a26-8e202ca10803.png">
+
+
+
