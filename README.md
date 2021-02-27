@@ -372,16 +372,16 @@ Ha: The residuals are not independently distributed.
 
 A forecast of the next 20 years for the residuals was conducted and then the next 20 observations for the data related to the specific variable was predicted.
 
-The first dataset focused on was the Corner dataset focusing on the G variable. The time series was called CornerG.ts.
-
-<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109400748-dd003b80-78f6-11eb-9117-41e4c25a1aba.png">
-
-The CornerG.ts. passed the ADF test and the Box-Ljung test. The next 20 years of residuals and 20 observations of the number of games were determined.
-
-Predictions for CornerG.ts Time Series
+Predictions for Corner Time Series Data
 
 |Forecasted Variables|High 80%|High 95%|RMSE|
 |:-------|---------------------:|---------------------:|----------:|
 |Residuals of Corner.ts|86|116|44.5|
 |Games of Corner.ts|89|120|46.1|
+|Residuals of CornerPO.ts|880|1,195|461.4|
+|Putouts of CornerPO.ts|395|596|296|
+|Residuals of CornerA.ts|51|70|27.3|
+|Assists of CornerA.ts||133||180||68.2|
+|Residuals of CornerDP.ts|48|65|25.0|
+|Double Plays of CornerDP.ts|39|56|26.4|
 
