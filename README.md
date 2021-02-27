@@ -49,6 +49,21 @@ CS: Number of opponents caught stealing by a catcher
 
 ZR: Zone Rating
 
+# Libraries Used in R
+
+Here is the list of libraries used to complete the baseball project in R:
+- Lahman
+- dplyr
+- ggplot2
+- outliers
+- class
+- gmodels
+- caret
+- randomForest
+- tseries
+- forecast
+- Metrics
+
 # Data Preparation
 
 The Fielding dataset was merged with the first and last name of players in the People dataset from the Lahman library.
