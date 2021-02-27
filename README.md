@@ -92,7 +92,7 @@ Corner Machine Learning Model Results
 |Radial|3,612|3,888|0.82|91.2%|8.8%|
 |Polynomial|3,377|3,727|0.73|86.4%|13.6%|
 
-The results from the Corner machine learning models showed that the results were in good agreement with the models that were created.
+The results from the Corner machine learning models showed that the results were in very good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
 
 Corner 2 Machine Learning Model Results
 
@@ -102,7 +102,7 @@ Corner 2 Machine Learning Model Results
 |Radial|3,579|3,113|0.84|91.8%|8.2%|
 |Polynomial|3,299|2,682|0.64|82.0%|18.0%|
 
-
+The results from the Corner2 machine learning models showed that the results were in very good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
 
 
 
