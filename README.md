@@ -376,4 +376,8 @@ The first dataset focused on was the Corner dataset focusing on the G variable. 
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109400748-dd003b80-78f6-11eb-9117-41e4c25a1aba.png">
 
-The CornerG.ts. passed the ADF test and the Box-Ljung test. Once the CornerG.ts passed 
+The CornerG.ts. passed the ADF test and the Box-Ljung test. The next 20 years of residuals and 20 observations of the number of games were determined.
+
+Predictions for CornerG.ts Time Series
+
+
