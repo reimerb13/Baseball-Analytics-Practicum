@@ -443,3 +443,46 @@ Results of M Time Series Data
 |Inn Outs of MiddleInnOuts.ts|2,258|2,933|995.3|
 |Residuals of MA.ts|160|212|76.7|
 |Assists of MA.ts|252|333|120.2|
+
+# Time Series Analysis of OFC and OFC2 Data
+
+A univariate time series analysis was conducted on the four most important variables in the OFC and OFC2 datasets. The four most important variables for Middle and M from the Random Forest models were G, InnOuts, A, and PO. After a time series was created by each specific variable, the Augmented Dickey-Fuller (ADF) test was conducted to determine if the time series was stationary. Here is the null and alternative hypotheses for the ADF test:
+
+Ho: Time series is non-stationary 
+
+Ha: Time series is stationary
+
+Once the ADF test was completed for the time series, the Box-Ljung test was conducted to determine if the residual values were independently distributed.  Here is the null and alternative hypotheses for the Box-Ljung test:
+
+Ho: The residuals are independently distributed.
+
+Ha: The residuals are not independently distributed.
+
+A forecast of the next 20 years for the residuals was conducted and then the next 20 observations for the data related to the specific variable was predicted.
+
+Results of OFC Time Series Data
+
+|Forecasted Variables|High 80%|High 95%|RMSE|
+|:-------|---------------------:|---------------------:|----------:|
+|Residuals of OFCG.ts|87|109|32.8|
+|Games of OFCG.ts|108|140|47.8|
+|Residuals of OFCPO.ts|430|515|154.9|
+|Putouts of OFCPO.ts|275|378|152.4|
+|Residuals of OFCInnOuts.ts|1,633|2,118|685.0|
+|Inn Outs of OFCInnOuts.ts|2,474|3,206|1,078.6|
+|Residuals of OFCA.ts|107|138|76.7|
+|Assists of OFCA.ts|23|33|16.0|
+
+Results of OFC2 Time Series Data
+
+|Forecasted Variables|High 80%|High 95%|RMSE|
+|:-------|---------------------:|---------------------:|----------:|
+|Residuals of OFC2G.ts|53|69|23.1|
+|Games of OFC2G.ts|110|143|45.6|
+|Residuals of OFC2PO.ts|230|302|106.2|
+|Putouts of OFC2PO.ts|239|324|125.2|
+|Residuals of OFC2InnOuts.ts|1,250|1,557|446.2|
+|Inn Outs of OFC2InnOuts.ts|2,422|3,125|1,035.7|
+|Residuals of OFC2A.ts|60|79|28.7|
+|Assists of OFC2A.ts|15|21|9.9|
+
