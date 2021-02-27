@@ -154,5 +154,46 @@ Corner kNN Model Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,878|4,057|0.93|96.5%|3.5%|
 
+The Kappa value for the kNN model was 0.93. The Kappa value indicates that there is a very good agreement amongst the model and the results.
 
+Corner2 kNN Model Results
 
+|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|3,630|3,434|0.94|96.9%|3.1%|
+
+The Kappa value for the kNN model was 0.94. The Kappa value indicates that there is a very good agreement amongst the model and the results.
+
+Middle kNN Model Results
+
+|Correct 2B Predictions|Correct SS Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,728|2,045|0.32|66.4%|35.6%|
+
+The Kappa value for the kNN model was 0.32. This would indicate that there is a fair agreement between the model and results.
+
+M kNN Model Results
+
+|Correct 2B Predictions|Correct SS Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,532|1,740|0.30|65.3%|34.7%|
+
+The Kappa value for this model was 0.3. This would indicate that there is a fair agreement of the results of the model.
+
+OFC kNN Model Results
+
+|Correct C Predictions|Correct OF Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,894|8,166|0.90|96.2%|3.8%|
+
+The Kappa value for this model was 0.90. This would indicate that there is a very good agreement of the results of the model.
+
+OFC2 kNN Model Results
+
+|Correct C Predictions|Correct OF Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,262|7,991|0.89|96.2%|3.8%|
+
+The Kappa value for this model was 0.89. This would indicate that there is a very good agreement of the results in the model.
+
+# Random Forest Models
