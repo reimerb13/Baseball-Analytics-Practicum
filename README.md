@@ -357,3 +357,23 @@ OFC2.rf2 Random Forest Results
 The Kappa value for this model was 0.90. This would indicate that there is a very good agreement of the results in the model. The results from the OFC2.rf2 Random Forest model was marginally better than the results from the OFC2.rf Random Forest model.
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109396036-17101400-78dc-11eb-823f-6b42fca42086.png">
+
+## Time Series Analysis of Corner and Corner 2 Data
+
+A univariate time series analysis was conducted on the four most important variables in the Corner and Corner2 datasets. The four most important variables for Corner and Corner2 from the Random Forest models were G, DP, A, and PO. After a time series was created by each specific variable, the Augmented Dickey-Fuller (ADF) test was conducted to determine if the time series was stationary. Here is the null and alternative hypotheses for the ADF test:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+Once the ADF test was completed for the time series, the Box-Ljung test was conducted to determine if the residual values were independently distributed.  Here is the null and alternative hypotheses for the Box-Ljung test:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+A forecast of the next 20 years for the residuals was conducted and then the next 20 observations for the data related to the specific variable was predicted.
+
+The first dataset focused on was the Corner dataset focusing on the G variable. The time series was called CornerG.ts.
+
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109400748-dd003b80-78f6-11eb-9117-41e4c25a1aba.png">
+
+The CornerG.ts. passed the ADF test and the Box-Ljung test. Once the CornerG.ts passed 
