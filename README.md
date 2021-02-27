@@ -144,4 +144,15 @@ OFC2 SVM Model Results
 
 The results from the OFC2 machine learning models showed that the results were in really good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
 
+## kNN Nearest Neighbor Models with Five Nearest Neighbors
+
+A second type of machine learning model that was created was a kNN nearest neighbor model that used five nearest neighbors. The kNN models were created for the Corner, Corner2, Middle, M, OFC, and OFC2 datasets.
+
+Corner kNN Model Results
+
+|Correct 1B Predictions|Correct 3B Predictions|Kappa Value|Accuracy Rate|
+|---------------------:|---------------------:|---------------------:|----------:|
+|3,878|4,057|0.93|96.5%|3.5%|
+
+
 
