@@ -263,3 +263,49 @@ Corner2.rf2 Random Forest Results
  
  <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395355-5a688380-78d8-11eb-9bbb-027b5e4e9533.png">
 
+The Random Forest model for the Middle data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP. 
+
+Middle.rf Random Forest Results
+
+|Correct 2B Predictions|Correct SS Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|3,013|2,082|0.41|70.9%|29.1%|
+
+The Kappa value for the random forest model was 0.410. This would indicate that there is a fair agreement amongst the results and the model. The top 4 variables with the most importance were PO, A, InnOuts, and E.
+
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395485-22157500-78d9-11eb-9a7c-8e37b79dac2d.png">
+
+A second Random Forest model was created for the Middle data looking at the POS variable in relation to the E, InnOuts, A, and PO variables.
+
+Middle.rf2 Random Forest Results
+
+|Correct 2B Predictions|Correct SS Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,818|2,145|0.38|69.0%|31.0%|
+
+The Kappa value for the random forest model was 0.38. This would indicate that there is a fair agreement amongst the results and the model. The Middle.rf2 accuracy rate was a little less than the Middle.rf accuracy rate.
+
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395590-a0721700-78d9-11eb-8797-d962caab27d7.png">
+
+The Random Forest model for the M data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP. 
+
+M.rf Random Forest Results
+
+|Correct 2B Predictions|Correct SS Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,806|1,723|0.37|69.2%|30.8%|
+
+The Kappa value for this model was 0.370. This would indicate that their is a fair agreement of the results of the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395699-38700080-78da-11eb-81d8-d37cdc7c4878.png">
+
+A second Random Forest model was created for the M data looking at the POS variable in relation to the G, InnOuts, A, and PO variables.
+
+M.rf2 Random Forest Results
+
+|Correct 2B Predictions|Correct SS Predictions|Kappa Value|Accuracy Rate|Error Rate|
+|---------------------:|---------------------:|---------------------:|----------:|-------:|
+|2,599|1,684|0.30|65.4%|34.6%|
+
+<img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395757-86850400-78da-11eb-9bd5-b749d651c35e.png">
+
