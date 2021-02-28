@@ -97,7 +97,14 @@ Before outliers were removed, the Fielding3_OFC dataset contained 38,331 observa
 
 # Support Vector Machines
 
-Machine learning models were created for Corner, Corner2, Middle, M, OFC, and OFC2. The variables used to create the models were stint, POS, G, GS, InnOuts, PO, A, E, and DP. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. The Kappa value, accuracy rate, and error rate were calculated for each model based on each dataset.
+Machine learning models were created for Corner, Corner2, Middle, M, OFC, and OFC2. The variables used to create the models were stint, POS, G, GS, InnOuts, PO, A, E, and DP. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. The Kappa value, accuracy rate, and error rate were calculated for each model based on each dataset. This is the interpretation of the Kappa value:
+
+<0: No agreement
+0 —.20: Slight
+.21 —.40: Fair
+.41 —.60: Moderate
+.61 —.80: Substantial
+.81–1.0: Perfect
 
 Corner SVM Model Results
 
@@ -107,7 +114,7 @@ Corner SVM Model Results
 |Radial|3,612|3,888|0.82|91.2%|8.8%|
 |Polynomial|3,377|3,727|0.73|86.4%|13.6%|
 
-The results from the Corner machine learning models showed that the results were in very good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
+The results from the Corner machine learning models showed that the results were in perfect agreement with the linear and radial models. The results were in substantial agreement with the polynomial model.
 
 Corner 2 SVM Model Results
 
@@ -117,7 +124,7 @@ Corner 2 SVM Model Results
 |Radial|3,579|3,113|0.84|91.8%|8.2%|
 |Polynomial|3,299|2,682|0.64|82.0%|18.0%|
 
-The results from the Corner2 machine learning models showed that the results were in very good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
+The results from the Corner2 machine learning models showed that the results were in perfect agreement with the linear and radial models. The results were in substantial agreement with the polynomial model.
 
 Middle SVM Model Results
 
@@ -127,7 +134,7 @@ Middle SVM Model Results
 |Radial|3,397|1,656|0.39|70.3%|29.7%|
 |Polynomial|3,762|672|0.19|61.7%|38.3%|
 
-The results from the Middle machine learning models showed that the results were in fair agreement with the linear and radial models. The results were in poor agreement with the polynomial model.
+The results from the Middle machine learning models showed that the results were in fair agreement with the linear and radial models. The results were in slight agreement with the polynomial model.
 
 M SVM Model Results
 
@@ -137,7 +144,7 @@ M SVM Model Results
 |Radial|3,116|1,415|0.36|69.2%|30.8%|
 |Polynomial|3,493|497|0.16|61.0%|39.0%|
 
-The results from the M machine learning models showed that the results were in fair agreement with the linear and radial models. The results were in poor agreement with the polynomial model.
+The results from the M machine learning models showed that the results were in fair agreement with the linear and radial models. The results were in slight agreement with the polynomial model.
 
 OFC SVM Model Results
 
@@ -147,7 +154,7 @@ OFC SVM Model Results
 |Radial|2,572|8,233|0.84|94.0%|6.0%|
 |Polynomial|2,152|8,249|0.74|90.4%|9.6%|
 
-The results from the OFC machine learning models showed that the results were in really good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
+The results from the OFC machine learning models showed that the results were in perfect agreement with the linear and radial models. The results were in substantial agreement with the polynomial model.
 
 OFC2 SVM Model Results
 
@@ -157,7 +164,7 @@ OFC2 SVM Model Results
 |Radial|1,942|8,054|0.82|93.8%|6.2%|
 |Polynomial|1,588|8,067|0.71|90.6%|9.4%|
 
-The results from the OFC2 machine learning models showed that the results were in really good agreement with the linear and radial models. The results were in good agreement with the polynomial model.
+The results from the OFC2 machine learning models showed that the results were in perfect agreement with the linear and radial models. The results were in substantial agreement with the polynomial model.
 
 ## kNN Nearest Neighbor Models with Five Nearest Neighbors
 
@@ -169,7 +176,7 @@ Corner kNN Model Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,878|4,057|0.93|96.5%|3.5%|
 
-The Kappa value for the kNN model was 0.93. The Kappa value indicates that there is a very good agreement amongst the model and the results.
+The Kappa value for the kNN model was 0.93. The Kappa value indicates that there is a perfect agreement amongst the model and the results.
 
 Corner2 kNN Model Results
 
@@ -177,7 +184,7 @@ Corner2 kNN Model Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,630|3,434|0.94|96.9%|3.1%|
 
-The Kappa value for the kNN model was 0.94. The Kappa value indicates that there is a very good agreement amongst the model and the results.
+The Kappa value for the kNN model was 0.94. The Kappa value indicates that there is a perfect agreement amongst the model and the results.
 
 Middle kNN Model Results
 
@@ -201,7 +208,7 @@ OFC kNN Model Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |2,894|8,166|0.90|96.2%|3.8%|
 
-The Kappa value for this model was 0.90. This would indicate that there is a very good agreement of the results of the model.
+The Kappa value for this model was 0.90. This would indicate that there is a perfect agreement of the results of the model.
 
 OFC2 kNN Model Results
 
@@ -209,7 +216,7 @@ OFC2 kNN Model Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |2,262|7,991|0.89|96.2%|3.8%|
 
-The Kappa value for this model was 0.89. This would indicate that there is a very good agreement of the results in the model.
+The Kappa value for this model was 0.89. This would indicate that there is a perfect agreement of the results in the model.
 
 # Random Forest Models
 
@@ -223,7 +230,7 @@ Corner.rf Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,962|4,033|0.94|97.2%|2.8%|
 
- The Kappa value is 0.94. This indicates that there is a very good agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO. 
+ The Kappa value is 0.94. This indicates that there is a perfect agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO. 
  
  <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395096-03ae7a00-78d7-11eb-9a26-8e202ca10803.png">
 
@@ -235,7 +242,7 @@ Corner.rf2 Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,944|4,002|0.93|96.6%|3.4%|
 
- The Kappa value is 0.93. This indicates that there is a very good agreement between the model and the results. The Corner.rf2 accuracy rate was a little bit less accurate than the Corner.rf accuracy.
+ The Kappa value is 0.93. This indicates that there is a perfect agreement between the model and the results. The Corner.rf2 accuracy rate was a little bit less accurate than the Corner.rf accuracy.
  
  <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395175-80d9ef00-78d7-11eb-95aa-70871eb88536.png">
 
@@ -247,7 +254,7 @@ Corner2.rf Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,676|3,393|0.94|97.0%|3.0%|
 
-The Kappa value is 0.94. This indicates that there is a very good agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO. 
+The Kappa value is 0.94. This indicates that there is a perfect agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO. 
 
 <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395269-f8a81980-78d7-11eb-9480-37c47b0cb3c3.png">
 
@@ -259,7 +266,7 @@ Corner2.rf2 Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,667|3,360|0.93|96.3%|3.7%|
 
- The Kappa value is 0.93. This indicates that there is a very good agreement between the model and the results. The Corner2.rf2 accuracy rate was a little bit less accurate than the Corner2.rf accuracy.
+ The Kappa value is 0.93. This indicates that there is a perfect agreement between the model and the results. The Corner2.rf2 accuracy rate was a little bit less accurate than the Corner2.rf accuracy.
  
  <img width="675" alt="image" src="https://user-images.githubusercontent.com/79723505/109395355-5a688380-78d8-11eb-9bbb-027b5e4e9533.png">
 
@@ -271,7 +278,7 @@ Middle.rf Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |3,013|2,082|0.41|70.9%|29.1%|
 
-The Kappa value for the random forest model was 0.410. This would indicate that there is a fair agreement amongst the results and the model. The top 4 variables with the most importance were PO, A, InnOuts, and E.
+The Kappa value for the random forest model was 0.410. This would indicate that there is a moderate agreement amongst the results and the model. The top 4 variables with the most importance were PO, A, InnOuts, and E.
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395485-22157500-78d9-11eb-9a7c-8e37b79dac2d.png">
 
@@ -307,6 +314,8 @@ M.rf2 Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |2,599|1,684|0.30|65.4%|34.6%|
 
+The Kappa value for this model was 0.30. This would indicate that their is a fair agreement of the results of the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395757-86850400-78da-11eb-9bd5-b749d651c35e.png">
 
 The Random Forest model for the OFC data focused on using the POS variable as a factor variable in relation to the following eight variables: stint, G, GS, InnOuts, PO, A, E, and DP.
@@ -317,7 +326,7 @@ OFC.rf Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |2,888|8,201|0.91|96.4%|3.6%|
 
-The Kappa value for this model was 0.91. This would indicate that there is a very good agreement of the results of the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+The Kappa value for this model was 0.91. This would indicate that there is a perfect agreement of the results of the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395864-0f9c3b00-78db-11eb-8f4e-b510608f91ef.png">
 
@@ -329,7 +338,7 @@ OFC.rf2 Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |2,946|8,174|0.92|96.7%|3.3%|
 
-The Kappa value for this model was 0.92. This would indicate that there is a very good agreement of the results in the model. The results for the OFC.rf2 were a little more accurate than the results from the OFC.rf model.
+The Kappa value for this model was 0.92. This would indicate that there is a perfect agreement of the results in the model. The results for the OFC.rf2 were a little more accurate than the results from the OFC.rf model.
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109396089-63f3ea80-78dc-11eb-88d7-96c17d2f2327.png">
 
@@ -342,7 +351,7 @@ OFC2.rf Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |2,214|8,028|0.89|96.1%|3.9%|
 
-The Kappa value for this model was 0.89. This would indicate that there is a very good agreement of the results in the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+The Kappa value for this model was 0.89. This would indicate that there is a perfect agreement of the results in the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109395966-bda7e500-78db-11eb-802e-d46b351a9e50.png">
 
@@ -354,7 +363,7 @@ OFC2.rf2 Random Forest Results
 |---------------------:|---------------------:|---------------------:|----------:|-------:|
 |2,277|7,985|0.90|96.3%|3.7%|
 
-The Kappa value for this model was 0.90. This would indicate that there is a very good agreement of the results in the model. The results from the OFC2.rf2 Random Forest model was marginally better than the results from the OFC2.rf Random Forest model.
+The Kappa value for this model was 0.90. This would indicate that there is a perfect agreement of the results in the model. The results from the OFC2.rf2 Random Forest model was marginally better than the results from the OFC2.rf Random Forest model.
 
 <img width="685" alt="image" src="https://user-images.githubusercontent.com/79723505/109396036-17101400-78dc-11eb-823f-6b42fca42086.png">
 
