@@ -502,6 +502,7 @@ Results of OFC2 Time Series Data
 
 # Conclusions from Results
 
+The results show that there wasn't a huge discrepancy in the accuracy results for SVM models, kNN models, and Random Forest models regardless of whether or not outliers were removed from the dataset. The Random Forest models determined that there were some differences of which variables were important in relation to a player's effectiveness on the field. 
 
 # References
 
