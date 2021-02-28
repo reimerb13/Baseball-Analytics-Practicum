@@ -1,0 +1,2525 @@
+---
+title: "Baseball Practicum Project"
+author: "Ben Reimer"
+date: "1/10/2021"
+output: pdf_document
+---
+
+```{r install_libs}
+library(Lahman)
+library(dplyr)
+library(ggplot2)
+library(outliers)
+library(class)
+library(gmodels)
+library(caret)
+library(e1071)
+library(randomForest)
+library(tseries)
+library(forecast)
+library(Metrics)
+```
+
+## Installing Libraries
+
+In the code above, the following libraries were installed: Lahman, dplyr, ggplot2, outliers, class, gmodels, caret, randomForest, e1071, tseries, forecast, and Metrics.
+
+```{r Fielding_data}
+data(Fielding)
+str(Fielding)
+summary(Fielding)
+```
+
+## Fielding Data
+
+In the code above, the 'Fielding' data was uploaded into R. The str() command shows how each variable was classified. The majority of the variables were classified as integers. The two variables that were classified as factors were teamID and lgID. The two variables that were classified as characters were playerID and POS. The 'Fielding' data has 143,046 observations with 18 variables.
+
+The summary statistics show the minimum, maximum, median, mean, and quartile values (first and third). There were eight variables that had NA values: GS, InnOuts, E, PB, WP, SB, CS, and ZR.
+
+
+```{r merge_data}
+People$name <- paste(People$nameFirst, People$nameLast, sep=" ")
+Fielding2 <- merge(Fielding, People[,c("playerID","name")],by="playerID", all.x=TRUE)
+Fielding2 <- arrange(Fielding2, yearID)
+str(Fielding2)
+```
+
+## Merge Data
+
+In the code above, the first and last names of players from the 'People' data were merged into the 'Fielding' data. The data was renamed 'Fielding2' and arranged by the yearID variable. The 'Fielding2' data now has 143,046 observations with 19 variables.
+
+```{r impute_NA}
+Fielding2$GS[is.na(Fielding2$GS)]<-mean(Fielding2$GS, na.rm = T) 
+Fielding2$InnOuts[is.na(Fielding2$InnOuts)]<-mean(Fielding2$InnOuts, na.rm = T) 
+Fielding2$E[is.na(Fielding2$E)]<-mean(Fielding2$E, na.rm = T) 
+Fielding2$GS[is.na(Fielding2$GS)]<-mean(Fielding2$GS, na.rm = T) 
+Fielding2$PB[is.na(Fielding2$PB)]<-mean(Fielding2$PB, na.rm = T) 
+Fielding2$WP[is.na(Fielding2$WP)]<-mean(Fielding2$WP, na.rm = T) 
+Fielding2$SB[is.na(Fielding2$SB)]<-mean(Fielding2$SB, na.rm = T) 
+Fielding2$CS[is.na(Fielding2$CS)]<-mean(Fielding2$CS, na.rm = T) 
+Fielding2$ZR[is.na(Fielding2$ZR)]<-mean(Fielding2$ZR, na.rm = T) 
+```
+
+## Impute NA Values
+
+In the code above, the NA values for each variable were imputed with the mean value for the following variables in the 'Fielding2' dataset: GS, InnOuts, E, GS, PB, WP, SB, CS, and ZR.
+
+```{r Fielding2_summary}
+summary(Fielding2)
+```
+
+## Fielding2 Summary
+
+In the code above, the summary statistics for the Fielding2 data are displayed. It's evident that the NA values were imputed with the mean value. Since the playerID, POS, and name variables are categorized as characters, there were no summary statistics available.
+
+```{r American_data}
+Fielding2_AL <- filter(Fielding2, lgID == "AL")
+str(Fielding2_AL)
+summary(Fielding2_AL)
+```
+
+## American League Data
+
+In the code above, the Fielding data only looked at the AL from the 'leagueID' variable. The dataset was renamed Fielding2_AL. This dataset has 63,306 observations with 19 variables. There are 7 variables where NA values exist: GS, InnOuts, PB, WP, SB, CS, and ZR.
+
+```{r AL_impute}
+Fielding2_AL$GS[is.na(Fielding2_AL$GS)]<-mean(Fielding2_AL$GS, na.rm = T) 
+Fielding2_AL$InnOuts[is.na(Fielding2_AL$InnOuts)]<-mean(Fielding2_AL$InnOuts, na.rm = T) 
+Fielding2_AL$PB[is.na(Fielding2_AL$PB)]<-mean(Fielding2_AL$PB, na.rm = T) 
+Fielding2_AL$WP[is.na(Fielding2_AL$WP)]<-mean(Fielding2_AL$WP, na.rm = T) 
+Fielding2_AL$SB[is.na(Fielding2_AL$SB)]<-mean(Fielding2_AL$SB, na.rm = T) 
+Fielding2_AL$CS[is.na(Fielding2_AL$CS)]<-mean(Fielding2_AL$CS, na.rm = T) 
+Fielding2_AL$ZR[is.na(Fielding2_AL$ZR)]<-mean(Fielding2_AL$ZR, na.rm = T) 
+```
+
+## Impute NA values for American League Data
+
+In the code above, the following variables had the NA values imputed with the mean value: GS, InnOuts, PB, WP, SB, CS, and ZR.
+
+```{r summary_AL}
+summary(Fielding2_AL)
+```
+
+## Summary of AL Data
+
+In the code above, the summary statistics for the variables in the Fielding2_AL data are provided. Since the playerID, POS, and name variables are categorized as character variables, they will not have any summary statistics.
+
+
+```{r national_data}
+Fielding2_NL <- filter(Fielding2, lgID == "NL")
+str(Fielding2_NL)
+summary(Fielding2_NL)
+```
+
+## National League Data
+
+In the code above, the Fielding data only looked at the NL from the 'leagueID' variable. The dataset was renamed Fielding2_NL. This dataset has 72,909 observations with 19 variables. There are no NA values in the Fielding2_NL data.
+
+```{r combine_data}
+Fielding3 <- rbind(Fielding2_AL, Fielding2_NL)
+str(Fielding3)
+summary(Fielding3)
+```
+
+## Combining League Data
+
+In the code above, the Fielding2_AL and Fielding2_NL data were combined to make a new dataset (Fielding3). This set looked at all the data between the AL and NL leagues. There were 136,215 observations with 19 variables. The summary statistics for the Fielding3 data are provided above. Since the playerID, POS, and name variables are categorized as character variables, they will not have any summary statistics.
+
+```{r boxplots_Fielding3}
+boxplot(Fielding3$yearID, main ="Boxplot of Year Data")
+boxplot(Fielding3$stint, main ="Boxplot of Stint Data")
+boxplot(Fielding3$G, main = "Boxplot of Game Data")
+boxplot(Fielding3$GS, main = "Boxplot of Games Started Data")
+boxplot(Fielding3$InnOuts, main = "Boxplot of InnOuts Data")
+boxplot(Fielding3$PO, main = "Boxplot of PO Data")
+boxplot(Fielding3$A, main = "Boxplot of A Data")
+boxplot(Fielding3$E, main = "Boxplot of E Data")
+boxplot(Fielding3$DP, main = "Boxplot of DP Data")
+boxplot(Fielding3$PB, main = "Boxplot of PB Data")
+boxplot(Fielding3$WP, main = "Boxplot of WP Data")
+boxplot(Fielding3$SB, main = "Boxplot of SB Data")
+boxplot(Fielding3$CS, main = "Boxplot of CS Data")
+boxplot(Fielding3$ZR, main = "Boxplot of ZR Data")
+```
+
+## Boxplots of Fielding3 Data
+
+In the code above, there are several boxplots of the Fielding3 data. The only boxplot where outliers don't exist is the Year boxplot. However, there are multiple outliers in the rest of the boxplots. The variables where a boxplot wasn't created for were: playerID, teamID, lgID, POS, and name.
+
+```{r Fielding3_Corner}
+Fielding3_1B <- filter(Fielding3, POS=="1B")
+Fielding3_3B <- filter(Fielding3, POS=="3B")
+Fielding3_Corner <- rbind(Fielding3_1B, Fielding3_3B)
+str(Fielding3_Corner)
+summary(Fielding3_Corner)
+```
+
+## Corner data
+
+In the code above, the Fielding3 data was filtered by two different positions in the POS variable: 1B and 3B. The Fielding3_1B and Fielding3_3B data were combined to make one new dataset: Fielding3_Corner. The Fielding3_Corner data has 27,405 observations with 19 variables. The summary statistics for the Fielding3_Corner data are provided. There are no NA values. Since the playerID, POS, and name variables are categorized as character variables, they will not have any summary statistics.
+
+
+
+```{r outlier_Corner}
+boxplot(Fielding3_Corner$stint, main ="Boxplot of Stint Data")
+stint <- boxplot.stats(Fielding3_Corner$stint)$out
+outliers <- boxplot(Fielding3_Corner$stint)$out
+x<-Fielding3_Corner
+x<- x[-which(x$stint %in% outliers),]
+boxplot(x$stint, main = "Boxplot of Stint Data")
+
+boxplot(Fielding3_Corner$G, main = "Boxplot of Game Data")
+G <- boxplot.stats(Fielding3_Corner$G)$out
+outliers2 <- boxplot(Fielding3_Corner$G)$out
+x<-Fielding3_Corner
+x<- x[-which(x$G %in% outliers2),]
+boxplot(x$G, main = "Boxplot of Game Data")
+
+
+boxplot(Fielding3_Corner$GS, main = "Boxplot of Game Started Data")
+GS <- boxplot.stats(Fielding3_Corner$GS)$out
+outliers3 <- boxplot(Fielding3_Corner$GS)$out
+x<-Fielding3_Corner
+x<- x[-which(x$GS %in% outliers3),]
+boxplot(x$GS, main = "Boxplot of Game Started Data")
+
+boxplot(Fielding3_Corner$InnOuts, main = "Boxplot of Game Data")
+IN <- boxplot.stats(Fielding3_Corner$InnOuts)$out
+outliers4 <- boxplot(Fielding3_Corner$InnOuts)$out
+x<-Fielding3_Corner
+x<- x[-which(x$InnOuts %in% outliers4),]
+boxplot(x$GS, main = "Boxplot of InnOuts Data")
+
+boxplot(Fielding3_Corner$PO, main = "Boxplot of Putout Data")
+PO <- boxplot.stats(Fielding3_Corner$PO)$out
+outliers5 <- boxplot(Fielding3_Corner$PO)$out
+x<-Fielding3_Corner
+x<- x[-which(x$PO %in% outliers5),]
+boxplot(x$PO, main = "Boxplot of Putout Data")
+
+
+boxplot(Fielding3_Corner$A, main = "Boxplot of Assist Data")
+A.data <- boxplot.stats(Fielding3_Corner$A)$out
+outliers6 <- boxplot(Fielding3_Corner$A)$out
+x<-Fielding3_Corner
+x<- x[-which(x$PO %in% outliers6),]
+boxplot(x$A, main = "Boxplot of Assist Data")
+
+
+boxplot(Fielding3_Corner$E, main = "Boxplot of Error Data")
+E.data <- boxplot.stats(Fielding3_Corner$E)$out
+outliers7 <- boxplot(Fielding3_Corner$E)$out
+x<-Fielding3_Corner
+x<- x[-which(x$E %in% outliers7),]
+boxplot(x$E, main = "Boxplot of Error Data")
+
+summary(x)
+sum(is.na(x))
+
+
+```
+## Dropping Outliers
+
+In the code above, the outliers were dropped from the original dataset. The 'Fielding3_Corner' dataset had 27,405 observations. After removing the outliers and naming the new dataset 'x', the dataset had 24,302 observations.
+
+```{r specific_Corner}
+Corner <- Fielding3_Corner[c(2,3,6:13)]
+summary(Corner)
+colSums(is.na(Corner))
+Corner$POS <- factor(Corner$POS)
+```
+
+## Specific Corner Variables
+
+In the code above, there were eight specific variables chosen in the Fiedling3_Corner data to create machine learning models. The dataset was renamed 'Corner'. The variables chosen for 'Corner' were stint, POS, G, GS, InnOuts, PO, A, E, and DP. There are no missing values in the 'Corner' data. The 'POS' variable was classified as a factor.
+
+```{r train_test}
+set.seed(123)
+samp <- sample(nrow(Corner), 0.7*nrow(Corner)) 
+Corner_train <- Corner[samp, ]
+Corner_test <- Corner[-samp, ]
+```
+
+## Training and Testing datasets
+
+In the code above, the data was randomized and the sample was split into a 70:30 ratio. There were two different datasets created to use when conducting machine learning models: Corner_train and Corner_test.
+
+```{r svm_model}
+model_svm <- svm(POS ~. , data=Corner_train, type = 'C-classification',  kernel = 'linear', cost = 1, gamma = 1/ncol(Corner_train))
+summary(model_svm)
+svm_prediction <- predict(model_svm, Corner_test, type = "POS")
+svm.table = table(Corner_test$POS, svm_prediction)
+svm.table
+confusion<- confusionMatrix(svm.table)
+confusion
+plot(svm_prediction)
+accuracy(Corner_test$POS, svm_prediction)
+ce(Corner_test$POS, svm_prediction)
+```
+
+## Linear SVM Model
+
+In the code above, a linear SVM model was created related to the POS variable. The results for predicting a player at 1B or 3B was 94.0% accurate. 3,647 of the observations were correctly predicted as 1B and 4,083 observations were correctly predicted as 3B. The accuracy rate showed that the results were 94.0% and the classification error rate was 6.0%. The Kappa value for this model was 0.88. The Kappa value indicates that a perfect agreement of the results in the model.
+
+```{r svm_model2}
+model_svm2 <- svm(POS ~. , data=Corner_train, type = 'C-classification',  kernel = 'radial', cost = 1, gamma = 1/ncol(Corner_train))
+summary(model_svm2)
+svm_prediction2 <- predict(model_svm2, Corner_test, type = "POS")
+svm.table2 = table(Corner_test$POS, svm_prediction2)
+svm.table2
+confusion2 <- confusionMatrix(svm.table2)
+confusion2
+plot(svm_prediction2)
+accuracy(Corner_test$POS, svm_prediction2)
+ce(Corner_test$POS, svm_prediction2)
+```
+## Radial SVM Model
+
+In the code above, a radial SVM model was created related to the POS variable. The results for predicting a player at 1B or 3B was 91.2% accurate. 3,612 of the observations were correctly predicted as 1B and 3,888 observations were correctly predicted as 3B. The accuracy rate for classification correctly was 91.2% and the classification error rate was 8.8%. The Kappa value for this model was 0.82. The Kappa value indicates that there is a perfect agreement amongst the results in the model.
+
+```{r svm_model3}
+model_svm3 <- svm(POS ~. , data=Corner_train, type = 'C-classification',  kernel = 'polynomial', cost = 1, gamma = 1/ncol(Corner_train))
+summary(model_svm3)
+svm_prediction3 <- predict(model_svm3, Corner_test, type = "POS")
+svm.table3 = table(Corner_test$POS, svm_prediction3)
+svm.table3
+confusion3 <- confusionMatrix(svm.table3)
+confusion3
+plot(svm_prediction3)
+accuracy(Corner_test$POS, svm_prediction3)
+ce(Corner_test$POS, svm_prediction3)
+```
+
+## Polynomial SVM Model
+
+In the code above, a polynomial SVM model was created related to the POS variable. The results for predicting a player at 1B or 3B was 86.4% accurate. 3,377 of the observations were correctly predicted as 1B and 3,727 observations were correctly predicted as 3B. The accuracy rate for classification was 86.4% and the error classification rate was 13.6%. The Kappa score for this model was 0.73. The Kappa value indicates that there is a substantial agreement amongst the model and results of the data.
+
+```{r Corner_knn}
+indexes=createDataPartition(Corner$POS, p=.7, list = F)
+train = Corner[indexes, ]
+test = Corner[-indexes, ]
+xtrain = train[,-3]
+ytrain = train[,3]
+xtest = test[,-3]
+ytest = test[,3]
+yhat = knn(xtrain, xtest, ytrain, k=5)
+cm <- confusionMatrix(ytest, yhat)
+print(cm)
+```
+
+
+## kNN model of Corner Data
+
+In the code above, a kNN model was created using the Corner data with five nearest neighbors. The results were 96.5% accurate. There were 3,878 observations correctly predicted as 1B and 4,057 observations correctly predicted as 3B. The Kappa value for the kNN model was 0.93. The Kappa value indicates that there is a perfect agreement amongst the model and the results.
+
+```{r Corner_random}
+Corner.rf <- randomForest(factor(Corner_train$POS)~stint+G+GS+InnOuts+PO+A+E+DP, data = Corner_train)
+Corner.rf
+plot(Corner.rf, uniform = TRUE, branch = 1, margin= 0.1)
+
+Corner_predictions = predict(Corner.rf, Corner_test, type="class")
+Corner_table <- table(Corner_test$POS, Corner_predictions)
+Corner_table
+results <- confusionMatrix(table(Corner_test$POS, Corner_predictions))
+results
+varImp(Corner.rf)
+```
+
+
+## Corner Random Forest Model
+
+In the code above, a random forest model for the Corner data was created. The results showed a 97.2% accuracy rate with 3,962 observations correctly predicting 1B and 4,033 observations correctly predicting 3B. The Kappa value is 0.94. This indicates that there is a perfect agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO. 
+
+```{r Corner_random2}
+Corner.rf2 <- randomForest(factor(Corner_train$POS)~G+PO+A+DP, data = Corner_train)
+Corner.rf2
+plot(Corner.rf2, uniform = TRUE, branch = 1, margin= 0.1)
+
+Corner_predictions2 = predict(Corner.rf2, Corner_test, type="class")
+Corner_table2 <- table(Corner_test$POS, Corner_predictions2)
+Corner_table2
+results2 <- confusionMatrix(table(Corner_test$POS, Corner_predictions2))
+results2
+varImp(Corner.rf2)
+```
+
+## Corner Random Forest Model 2
+
+In the code above, a random forest model for the Corner data was created selecting only the top 4 meaningful variables from the prior model. The results showed a 96.6% accuracy rate with 3,944 observations correctly predicting 1B and 4,002 observations correctly predicting 3B. The Kappa value is 0.93, which indicates that there is a perfect agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO.
+
+```{r Corner_ts}
+CornerG.ts <- ts(Corner$G, start = c(1901), end = (2019), frequency = 1)
+head(CornerG.ts)
+plot.ts(CornerG.ts, main = "Corner Data of Games")
+```
+## Graph of Corner Games Data
+
+In the code above, a time series graph of the G variable in the Corner data was created.
+
+```{r Corner_adf}
+adf.test(CornerG.ts)
+```
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the Corner.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r fit_arima}
+fit <- auto.arima(CornerG.ts)
+fit.model <- Box.test(fit$residuals, type = "Ljung-Box")
+fit.model
+```
+
+## Box-Ljung Test for fit model
+
+In the code above, the Corner.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.729, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r forecast_fit}
+fcast <- forecast(fit, 20)
+summary(fcast)
+plot(fcast)
+```
+## Forecast Fit Model
+
+In the code above, the fit model forecasted the next 10 years of the expected values for Corner.ts from 80-95%. The highest expected value at 95% was 116.01 and the highest expected value at 80% was 86.
+
+```{r forecast_CornerG}
+fcast2 <- forecast(Corner$G, 100)
+summary(fcast2)
+plot(fcast2)
+```
+## Forecast Number of Games for Corner Data
+
+In the code above, a forecast method for the next 100 entries of the number of games for Corner positions was projected. The high forecast at 80% was roughly 89 games and the high forecast at 95% was roughly 120 games.
+
+```{r Corner_PO}
+CornerPO.ts <- ts(Corner$PO, start = c(1901), end = (2019), frequency = 1)
+head(CornerPO.ts)
+plot.ts(CornerPO.ts, main = "Corner Data of Putouts")
+```
+## Time Series Graph of PO Variable in Corner Data
+
+In the code above, a time series graph of the PO variable in the Corner data was created.
+
+```{r ADF_CornerPO}
+adf.test(CornerPO.ts)
+```
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the CornerPO.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r fit2_model}
+fit2 <- auto.arima(CornerPO.ts)
+fit2.model <- Box.test(fit2$residuals, type = "Ljung-Box")
+fit2.model
+```
+
+## Box-Ljung Test for fit2 model
+
+In the code above, the CornerPO.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.690, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r fcast3_model}
+fcast3 <- forecast(fit2, 20)
+summary(fcast3)
+plot(fcast3)
+```
+
+## Forecast Fit2 Model
+
+In the code above, the fit model forecasted the next 10 years of the expected values for Corner.ts from 80-95%. The highest expected value at 95% was 1,194.51 and the highest expected value at 80% was 880.14.
+
+```{r fcast4_predictions}
+fcast4 <- forecast(Corner$PO, 100)
+summary(fcast4)
+plot(fcast4)
+```
+
+## Forecast Number of PutOuts for Corner Data
+
+In the code above, a forecast method for the next 20 entries of the number of putouts for Corner positions was projected. The high forecast at 80% was roughly 395 putouts and the high forecast at 95% was roughly 596 putouts.
+
+```{r corner_A graph}
+CornerA.ts <- ts(Corner$A, start = c(1901), end = (2019), frequency = 1)
+head(CornerA.ts)
+plot.ts(CornerA.ts, main = "Corner Data of Assists")
+```
+## Time Series Graph of A Variable in Corner Data
+
+In the code above, a time series graph of the A variable in the Corner data was created.
+
+```{r ADF_CornerA}
+adf.test(CornerA.ts)
+```
+
+## ADF Test for CornerA.ts Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the CornerA.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r fit3_results}
+fit3 <- auto.arima(CornerA.ts)
+fit3.model <- Box.test(fit3$residuals, type = "Ljung-Box")
+fit3.model
+```
+
+## Box-Ljung Test for fit3 model
+
+In the code above, the CornerA.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.99, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r fcast5_forecast}
+fcast5 <- forecast(fit3, 20)
+summary(fcast5)
+plot(fcast5)
+```
+
+## Forecast Fit3 Model
+
+In the code above, the fit model forecasted the next 20 years of the expected values for Corner.ts from 80-95%. The highest expected value at 95% was 70 and the highest expected value at 80% was 51.
+
+```{r fcast6_predictions}
+fcast6 <- forecast(Corner$A, 100)
+summary(fcast6)
+plot(fcast6)
+```
+
+## Forecast Number of Assists for Corner Data
+
+In the code above, a forecast method for the next 100 entries of the number of assists for Corner positions was projected. The high forecast at 80% was roughly 133 assists and the high forecast at 95% was roughly 180 assists.
+
+```{r CornerDP_graph}
+CornerDP.ts <- ts(Corner$DP, start = c(1901), end = (2019), frequency = 1)
+head(CornerDP.ts)
+plot.ts(CornerA.ts, main = "Corner Data of Double Plays")
+```
+## Time Series Graph of DP Variable in Corner Data
+
+In the code above, a time series graph of the DP variable in the Corner data was created.
+
+```{r ADF_CornerDP}
+adf.test(CornerDP.ts)
+```
+
+## ADF Test for CornerDP.ts Time Series
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the CornerDP.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r fit4_results}
+fit4 <- auto.arima(CornerDP.ts)
+fit4.model <- Box.test(fit4$residuals, type = "Ljung-Box")
+fit4.model
+```
+
+## Box-Ljung Test for fit4 model
+
+In the code above, the CornerDP.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.83, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r fcast7_forecast}
+fcast7 <- forecast(fit4, 20)
+summary(fcast7)
+plot(fcast7)
+```
+## Forecast Fit4 Model
+
+In the code above, the fit model forecasted the next 20 years of the expected values for CornerDP.ts from 80-95%. The highest expected value at 95% was 65 and the highest expected value at 80% was 48.
+
+```{r fcast8_predictions}
+fcast8 <- forecast(Corner$DP, 100)
+summary(fcast8)
+plot(fcast8)
+```
+## Forecast Number of Double Plays for Corner Data
+
+In the code above, a forecast method for the next 100 entries of the number of double plays for Corner positions was projected. The high forecast at 80% was roughly 39 double plays and the high forecast at 95% was roughly 56 double plays.
+
+```{r Corner2_data}
+Corner2 <- x[c(3,6:13)]
+summary(Corner2)
+colSums(is.na(Corner2))
+Corner2$POS <- factor(Corner2$POS)
+```
+
+## Corner2 Data
+
+In the code above, the 'x' data was used to create machine learning models. The data was renamed 'Corner2'. There are no missing values in 'Corner2'. The variables chosen to create machine learning models were stint, POS, G, GS, InnOuts, PO, A, E, and DP. 
+
+```{r Corner2_machine}
+set.seed(123)
+samp2 <- sample(nrow(Corner2), 0.7*nrow(Corner2)) 
+Corner2_train <- Corner2[samp2, ]
+Corner2_test <- Corner2[-samp2, ]
+```
+
+## Corner2 Data for Machine Learning Models
+
+In the code above, the data was prepared in a 70:30 ratio to conduct machine learning models using 'Corner2' data.
+
+```{r Corner2_linear}
+Corner2_svm <- svm(POS ~. , data=Corner2_train, type = 'C-classification',  kernel = 'linear', cost = 1, gamma = 1/ncol(Corner2_train))
+summary(Corner2_svm)
+Corner2_prediction <- predict(Corner2_svm, Corner2_test, type = "POS")
+Corner2.table = table(Corner2_test$POS, Corner2_prediction)
+Corner2.table
+Corner2.confusion<- confusionMatrix(Corner2.table)
+Corner2.confusion
+plot(Corner2_prediction)
+accuracy(Corner2_test$POS, Corner2_prediction)
+ce(Corner2_test$POS,Corner2_prediction)
+```
+
+## Linear SVM Model for Corner2
+
+In the code above, a linear SVM model of the Corner2 was created related to the POS variable. The results for predicting a player at 1B or 3B was 94.2% accurate. 3,442 of the observations were correctly predicted as 1B and 3,429 observations were correctly predicted as 3B. The accuracy rate for classifying correctly was 94.2% and the classification error rate was 5.8%. The Kappa value for this model was 0.89. This indicates that there is a perfect agreement between the results and the model.
+
+```{r Corner2_radial}
+Corner2_svm2 <- svm(POS ~. , data=Corner2_train, type = 'C-classification',  kernel = 'radial', cost = 1, gamma = 1/ncol(Corner2_train))
+summary(Corner2_svm2)
+Corner2_prediction2 <- predict(Corner2_svm2, Corner2_test, type = "POS")
+Corner2.table2 = table(Corner2_test$POS, Corner2_prediction2)
+Corner2.table2
+Corner2_confusion2<- confusionMatrix(Corner2.table2)
+Corner2_confusion2
+plot(Corner2_prediction2)
+accuracy(Corner2_test$POS, Corner2_prediction2)
+ce(Corner2_test$POS,Corner2_prediction2)
+```
+## Radial SVM Model for Corner2
+
+In the code above, a radial SVM model of the Corner2 was created related to the POS variable. The results for predicting a player at 1B or 3B was 91.8% accurate. 3,579 of the observations were correctly predicted as 1B and 3,113 observations were correctly predicted as 3B. The accuracy rate for classifying correctly was 91.8% and the classification error rate was 8.2%. The Kappa Value for this model was 0.84. This indicates that there is a perfect agreement amongst the results and model.
+
+```{r Corner2_polynomial}
+Corner2_svm3 <- svm(POS ~. , data=Corner2_train, type = 'C-classification',  kernel = 'polynomial', cost = 1, gamma = 1/ncol(Corner2_train))
+summary(Corner2_svm3)
+Corner2_prediction3 <- predict(Corner2_svm3, Corner2_test, type = "POS")
+Corner2.table3 = table(Corner2_test$POS, Corner2_prediction3)
+Corner2.table3
+Corner2_confusion3<- confusionMatrix(Corner2.table3)
+Corner2_confusion3
+plot(Corner2_prediction3)
+accuracy(Corner2_test$POS, Corner2_prediction3)
+ce(Corner2_test$POS,Corner2_prediction3)
+```
+## Polynomial SVM Model for Corner2
+
+In the code above, a polynomial SVM model of the Corner2 was created related to the POS variable. The results for predicting a player at 1B or 3B was 82.0% accurate. 3,299 of the observations were correctly predicted as 1B and 2,682 observations were correctly predicted as 3B. The accuracy rate for classifying correctly was 82.0% and the classification error rate was 18.0%. The Kappa value for this model was 0.64. This would indicate that 
+there is a substantial agreement between the model and the results.
+
+```{r Corner2_knn}
+indexes2=createDataPartition(Corner2$POS, p=.7, list = F)
+train2 = Corner2[indexes2, ]
+test2 = Corner2[-indexes2, ]
+xtrain2 = train2[,-2]
+ytrain2 = train2[,2]
+xtest2 = test2[,-2]
+ytest2 = test2[,2]
+yhat2 = knn(xtrain2, xtest2, ytrain2, k=5)
+cm2 <- confusionMatrix(ytest2, yhat2)
+print(cm2)
+```
+
+## kNN model of Corner2 Data
+
+In the code above, a kNN model was created using the Corner2 data with five nearest neighbors. The results were 96.9% accurate. 3,630 observations were correctly predicted as 1B and 3,434 observations were correctly predicted as 3B. The Kappa value for this model was 0.94. This would indicate that there is a perfect agreement amongst the model and the results.
+
+```{r Corner2_random}
+Corner2.rf <- randomForest(factor(Corner2_train$POS)~stint+G+GS+InnOuts+PO+A+E+DP, data = Corner2_train)
+Corner2.rf
+plot(Corner2.rf, uniform = TRUE, branch = 1, margin= 0.1)
+
+Corner2_predictions = predict(Corner2.rf, Corner2_test, type="class")
+Corner2_table <- table(Corner2_test$POS, Corner2_predictions)
+Corner2_table
+results3 <- confusionMatrix(table(Corner2_test$POS, Corner2_predictions))
+results3
+varImp(Corner2.rf)
+```
+## Corner2 Random Forest Model
+
+In the code above, a random forest model for the Corner2 data was created. The results showed a 97.0% accuracy rate with 3,676 observations correctly predicting 1B and 3,393 observations correctly predicting 3B. The Kappa value was 0.94, which indicates that there is a perfect agreement between the model and the results. The top 4 variables with the most importance were G, DP, A, and PO.
+
+```{r Corner2_rf2}
+Corner2.rf2 <- randomForest(factor(Corner2_train$POS)~G+PO+A+DP, data = Corner2_train)
+Corner2.rf2
+plot(Corner2.rf2, uniform = TRUE, branch = 1, margin= 0.1)
+
+Corner2_predictions2 = predict(Corner2.rf2, Corner2_test, type="class")
+Corner2_table2 <- table(Corner2_test$POS, Corner2_predictions2)
+Corner2_table2
+results4 <- confusionMatrix(table(Corner2_test$POS, Corner2_predictions2))
+results4
+varImp(Corner2.rf2)
+```
+
+## Corner2 Random Forest Model 2
+
+In the code above, a random forest model for the Corner2 data was created looking at the top four variables from the previous model. The results showed a 96.4% accuracy rate with 3,667 observations correctly predicting 1B and 3,360 observations correctly predicting 3B. The Kappa value was 0.93 which indicates that there is a perfect agreement between the results and the model. The top 4 variables with the most importance were G, DP, A, and PO.
+
+```{r Corner2_ts}
+Corner2G.ts <- ts(Corner2$G, start = c(1901), end = (2019), frequency = 4)
+head(Corner2G.ts)
+plot.ts(Corner2G.ts, main = "Corner2 Game Time Series ")
+```
+## Graph of Corner2 G Time Series
+
+In the code above, a graph of the corner2G time series was created.
+
+```{r adf_Corner2}
+adf.test(Corner2G.ts)
+```
+
+## ADF Test for Corner 2 Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the Corner2.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r fit2_Corner2}
+Corner2G.arima <- auto.arima(Corner2G.ts)
+Corner2G.model <- Box.test(Corner2G.arima$residuals, type = "Ljung-Box")
+Corner2G.model
+```
+
+## Ljung-Box Test for Corner2.ts Model
+
+In the code above, the Corner.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.916, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r Corner2Gcast_predictions}
+Corner2Gcast <- forecast(Corner2G.arima, 20)
+summary(Corner2Gcast)
+plot(Corner2Gcast)
+```
+
+## Corner2Gcast Predictions
+
+In the code above, the predictions for the Corner2Gcast model were conducted. The high 80% expected value was roughly 50 and the high 95% expected value was 66.
+
+```{r C2G_predictions}
+C2G <- forecast(Corner2$G, 100)
+summary(C2G)
+plot(C2G)
+```
+
+## C2G Predictions
+
+In the code above, the next 100 entries for the number of games by the Corner2 data was projected. The high 80% value was 68 games and the high 95% value was 91 games.
+
+```{r Corner2PO_graph}
+Corner2PO.ts <- ts(Corner2$PO, start = c(1901), end = (2019), frequency = 4)
+head(Corner2PO.ts)
+plot.ts(Corner2PO.ts, main = "Corner2 Putouts Time Series ")
+```
+## Corner2 PO Time Series Graph
+
+In the code above, a time series graph of the PO variable for the Corner2 data was created.
+
+```{r ADF_Corner2PO}
+adf.test(Corner2PO.ts)
+```
+
+## ADF Test for Corner 2 PO Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the Corner2PO.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r Corner2PO_model}
+Corner2PO.arima <- auto.arima(Corner2PO.ts)
+Corner2PO.model <- Box.test(Corner2PO.arima$residuals, type = "Ljung-Box")
+Corner2PO.model
+```
+
+## Ljung-Box Test for Corner2PO.ts Model
+
+In the code above, the Corner2PO.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.617, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r Corner2PO_forecast}
+Corner2POcast <- forecast(Corner2PO.arima, 20)
+summary(Corner2POcast)
+plot(Corner2POcast)
+```
+## Corner2POcast Predictions
+
+In the code above, the predictions for the Corner2POcast model were conducted. The high 80% expected value was roughly 500 and the high 95% expected value was 664.
+
+```{r C2PO_forecast}
+C2PO <- forecast(Corner2$PO, 100)
+summary(C2PO)
+plot(C2PO)
+```
+## C2PO Predictions
+
+In the code above, the next 20 entries for the number of putouts by the Corner2PO data was projected. The high 80% value was 340 putouts games and the high 95% value was 514 putouts.
+
+```{r Corner2A_graph}
+Corner2A.ts <- ts(Corner2$A, start = c(1901), end = (2019), frequency = 4)
+head(Corner2A.ts)
+plot.ts(Corner2A.ts, main = "Corner2 Assists Time Series")
+```
+## Corner2A.ts Time Series Graph
+
+In the graph above, a graph of the Corner2A.ts time series was created.
+
+```{r ADF_Corner2A}
+adf.test(Corner2A.ts)
+```
+
+## ADF Test for Corner 2 A Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the Corner2A.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r Corner2A_model}
+Corner2A.arima <- auto.arima(Corner2A.ts)
+Corner2A.model <- Box.test(Corner2A.arima$residuals, type = "Ljung-Box")
+Corner2A.model
+```
+
+## Ljung-Box Test for Corner2A.ts Model
+
+In the code above, the Corner2A.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.865, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r Corner2Acast_predictions}
+Corner2Acast <- forecast(Corner2A.arima, 20)
+summary(Corner2Acast)
+plot(Corner2Acast)
+```
+## Corner2Acast Predictions
+
+In the code above, the predictions for the Corner2Acast model were conducted. The high 80% expected value was roughly 32 and the high 95% expected value was 42.
+
+```{r C2A_predictions}
+C2A <- forecast(Corner2$A, 100)
+summary(C2A)
+plot(C2A)
+```
+
+## C2A Predictions
+
+In the code above, the next 100 entries for the number of assists by the Corner2A data was projected. The high 80% value was 89 assists games and the high 95% value was 117 assists.
+
+```{r Corner2DP_graph}
+Corner2DP.ts <- ts(Corner2$DP, start = c(1901), end = (2019), frequency = 4)
+head(Corner2DP.ts)
+plot.ts(Corner2DP.ts, main = "Corner2 Double Plays Time Series")
+```
+## Corner2DP Time Series Graph
+
+In the code above, a graph of the Corner2DP.ts time series was created.
+
+```{r ADF_Corner2DP}
+adf.test(Corner2DP.ts)
+```
+
+## ADF Test for Corner 2DP Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the Corner2DP.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r Corner2DP_model}
+Corner2DP.arima <- auto.arima(Corner2DP.ts)
+Corner2DP.model <- Box.test(Corner2DP.arima$residuals, type = "Ljung-Box")
+Corner2DP.model
+```
+
+## Ljung-Box Test for Corner2DP.ts Model
+
+In the code above, the Corner2DP.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.846, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r Corner2DPcast}
+Corner2DPcast <- forecast(Corner2DP.arima, 20)
+summary(Corner2DPcast)
+plot(Corner2DPcast)
+```
+
+## Corner2DPcast Predictions
+
+In the code above, the predictions for the Corner2DPcast model were conducted. The high 80% expected value was roughly 26 and the high 95% expected value was 35.
+
+```{r C2DP_forecast}
+C2DP <- forecast(Corner2$DP, 100)
+summary(C2DP)
+plot(C2DP)
+```
+
+## C2DP Predictions
+
+In the code above, the next 20 entries for the number of double plays by the Corner2DP data was projected. The high 80% value was 34 double plays and the high 95% value was roughly 51 double plays.
+
+```{r Fielding3_Middle}
+Fielding3_2B <- filter(Fielding3, POS=="2B")
+Fielding3_SS <- filter(Fielding3, POS=="SS")
+Fielding3_Middle <- rbind(Fielding3_2B, Fielding3_SS)
+str(Fielding3_Middle)
+summary(Fielding3_Middle)
+```
+
+## Middle Data
+
+In the code above, the Fielding3 data was filtered by two different positions in the POS variable: 2B and SS. The Fielding3_2B and Fielding3_SS data were combined to make one new dataset: Fielding3_Middle. The Fielding3_Middle data has 23,966 observations with 19 variables. The summary statistics for the Fielding3_Middle data are provided. There are no NA values. Since the playerID, POS, and name variables are categorized as character variables, they will not have any summary statistics.
+
+```{r middle_outliers}
+boxplot(Fielding3_Middle$stint, main ="Boxplot of Middle Stint Data")
+stint2 <- boxplot.stats(Fielding3_Middle$stint)$out
+moutliers <- boxplot(Fielding3_Middle$stint)$out
+y<-Fielding3_Middle
+y<- y[-which(y$stint %in% moutliers),]
+boxplot(y$stint, main = "Boxplot of Middle Stint Data")
+
+boxplot(Fielding3_Middle$G, main = "Boxplot of Middle Game Data")
+MG <- boxplot.stats(Fielding3_Middle$G)$out
+moutliers2 <- boxplot(Fielding3_Middle$G)$out
+y<-Fielding3_Middle
+y<- y[-which(y$G %in% moutliers2),]
+boxplot(y$G, main = "Boxplot of Middle Game Data")
+
+boxplot(Fielding3_Middle$GS, main = "Boxplot of Middle Game Started Data")
+MGS <- boxplot.stats(Fielding3_Middle$GS)$out
+moutliers3 <- boxplot(Fielding3_Middle$GS)$out
+y<-Fielding3_Middle
+y<- y[-which(y$GS %in% moutliers3),]
+boxplot(y$GS, main = "Boxplot of Middle Game Started Data")
+
+boxplot(Fielding3_Middle$InnOuts, main = "Boxplot of Middle InnOuts Data")
+mIN <- boxplot.stats(Fielding3_Middle$InnOuts)$out
+moutliers4 <- boxplot(Fielding3_Middle$InnOuts)$out
+y<-Fielding3_Middle
+y<- y[-which(y$InnOuts %in% moutliers4),]
+boxplot(y$GS, main = "Boxplot of Middle InnOuts Data")
+
+boxplot(Fielding3_Middle$PO, main = "Boxplot of Middle Putout Data")
+mPO <- boxplot.stats(Fielding3_Middle$PO)$out
+moutliers5 <- boxplot(Fielding3_Middle$PO)$out
+y<-Fielding3_Middle
+y<- y[-which(y$PO %in% moutliers5),]
+boxplot(y$PO, main = "Boxplot of Middle Putout Data")
+
+
+boxplot(Fielding3_Middle$A, main = "Boxplot of Middle Assist Data")
+mA.data <- boxplot.stats(Fielding3_Middle$A)$out
+moutliers6 <- boxplot(Fielding3_Middle$A)$out
+y<-Fielding3_Middle
+y<- x[-which(y$PO %in% moutliers6),]
+boxplot(y$A, main = "Boxplot of Middle Assist Data")
+
+
+boxplot(Fielding3_Middle$E, main = "Boxplot of Middle Error Data")
+mE.data <- boxplot.stats(Fielding3_Middle$E)$out
+moutliers7 <- boxplot(Fielding3_Middle$E)$out
+y<-Fielding3_Middle
+y<- y[-which(y$E %in% moutliers7),]
+boxplot(y$E, main = "Boxplot of Middle Error Data")
+
+summary(y)
+sum(is.na(y))
+
+```
+## Outliers for Middle Data
+
+In the code above, the outliers were removed from the variables in the Middle data and the dataset was renamed as y. There are no missing values in the y dataset.
+
+```{r variables_middle}
+Middle <- Fielding3_Middle[c(3,6:13)]
+summary(Middle)
+colSums(is.na(Middle))
+Middle$POS <- factor(Middle$POS)
+```
+
+
+## Middle Variables for Machine Learning Models
+
+In the code above, the Fielding3_Middle data was renamed 'Middle' and specific variables were selected to use during machine learning models. The variables used were stint, POS, G, GS, InnOuts, PO, A, E, and DP. There are no missing values in the Middle data. The POS variables was reclassified as a factor variable.
+
+```{r middle_machine}
+set.seed(123)
+samp3 <- sample(nrow(Middle), 0.7*nrow(Middle)) 
+Middle_train <- Middle[samp3, ]
+Middle_test <- Middle[-samp3, ]
+```
+
+## Middle Machine Data Sets
+
+In the code above, the data was sampled with a 70:30 ratio. The samp3 data was separated into Middle_train and Middle_test.
+
+```{r linear_middle}
+middle_svm <- svm(POS ~. , data=Middle_train, type = 'C-classification',  kernel = 'linear', cost = 1, gamma = 1/ncol(Middle_train))
+summary(middle_svm)
+middle_prediction <- predict(middle_svm, Middle_test, type = "POS")
+middle.table = table(Middle_test$POS, middle_prediction)
+middle.table
+mid_confusion<- confusionMatrix(middle.table)
+mid_confusion
+plot(middle_prediction)
+accuracy(Middle_test$POS, middle_prediction)
+ce(Middle_test$POS,middle_prediction)
+```
+## Linear Machine Learning Model
+
+In the code above, a linear machine learning model was created using the POS variable and Middle_train variable. The results show a 69.3% accuracy rate based on position (2B or SS). The model correctly predicted 3,363 observations as 2B and 1,616 observations as SS. The positive classification rate was 69.2% and the classification error rate was 30.8%. The Kappa value for this model was 0.37. This would indicate that there is a fair agreement between the results and the model.
+
+```{r radial_middle}
+middle_svm2 <- svm(POS ~. , data=Middle_train, type = 'C-classification',  kernel = 'radial', cost = 1, gamma = 1/ncol(Middle_train))
+summary(middle_svm2)
+middle_prediction2 <- predict(middle_svm2, Middle_test, type = "POS")
+middle.table2 = table(Middle_test$POS, middle_prediction2)
+middle.table2
+mid_confusion2<- confusionMatrix(middle.table2)
+mid_confusion2
+plot(middle_prediction2)
+accuracy(Middle_test$POS, middle_prediction2)
+ce(Middle_test$POS,middle_prediction2)
+```
+## Radial Machine Learning Model for Middle Data
+
+In the code above, a radial machine learning model was created using the POS variable and Middle_train variable. The results show a 70.3% accuracy rate based on position (2B or SS). The model correctly predicted 3,397 observations as 2B and 1,656 observations as SS. The positive classification rate was 70.3% and the error classification rate was 29.7%. The Kappa value for this model was 0.39. This would indicate that there is a fair agreement between the model and the results.
+
+```{r polynomial_middle}
+middle_svm3 <- svm(POS ~. , data=Middle_train, type = 'C-classification',  kernel = 'polynomial', cost = 1, gamma = 1/ncol(Middle_train))
+summary(middle_svm3)
+middle_prediction3 <- predict(middle_svm3, Middle_test, type = "POS")
+middle.table3 = table(Middle_test$POS, middle_prediction3)
+middle.table3
+mid_confusion3<- confusionMatrix(middle.table3)
+mid_confusion3
+plot(middle_prediction3)
+accuracy(Middle_test$POS, middle_prediction3)
+ce(Middle_test$POS,middle_prediction3)
+```
+## Polynomial Machine Learning Model for Middle Data
+
+In the code above, a polynomial machine learning model was created using the POS variable and Middle_train variable. The results show a 61.7% accuracy rate based on position (2B or SS). The model correctly predicted 3,762 observations as 2B and 672 observations as SS. The positive accuracy rate was 61.7% and the error classification rate was 38.3%. The Kappa value for this model was 0.19. This would indicate that there is a slight agreement between the results and the model.
+
+```{r Middle_knn}
+indexes3=createDataPartition(Middle$POS, p=.7, list = F)
+train3 = Middle[indexes3, ]
+test3 = Middle[-indexes3, ]
+xtrain3 = train3[,-2]
+ytrain3 = train3[,2]
+xtest3 = test3[,-2]
+ytest3 = test3[,2]
+yhat3 = knn(xtrain3, xtest3, ytrain3, k=5)
+cm3 <- confusionMatrix(ytest3, yhat3)
+print(cm3)
+```
+
+## kNN Model for Middle Data
+
+In the code above, a kNN model with five nearest neighbors was created using the Middle data. The accuracy rate of this model was 66.4%. The model showed that 2,728 observations were correctly predicted as 2B and 2,045 observations were correctly predicted as SS. The Kappa value for the kNN model was 0.32. This would indicate that there is a fair agreement between the model and results.
+
+```{r Middle_rf}
+Middle.rf <- randomForest(factor(Middle_train$POS)~stint+G+GS+InnOuts+PO+A+E+DP, data = Middle_train)
+Middle.rf
+plot(Middle.rf, uniform = TRUE, branch = 1, margin= 0.1)
+
+Middle_predictions = predict(Middle.rf, Middle_test, type="class")
+Middle_table <- table(Middle_test$POS, Middle_predictions)
+Middle_table
+Middle_results <- confusionMatrix(table(Middle_test$POS, Middle_predictions))
+Middle_results
+varImp(Middle.rf)
+```
+
+## Middle Random Forest Model
+
+In the code above, a random forest model for the Middle data was created. The results showed a 70.9% accuracy rate with 3,013 observations correctly predicting 2B and 2,082 observations correctly predicting SS. The Kappa value for the random forest model was 0.410. This would indicate that there is a fair agreement amongst the results and the model. The top 4 variables with the most importance were PO, A, InnOuts, and E.
+
+```{r Middle_rf2}
+Middle.rf2 <- randomForest(factor(Middle_train$POS)~+InnOuts+E+PO+A, data = Middle_train)
+Middle.rf2
+plot(Middle.rf2, uniform = TRUE, branch = 1, margin= 0.1)
+
+Middle_predictions2 = predict(Middle.rf2, Middle_test, type="class")
+Middle_table2 <- table(Middle_test$POS, Middle_predictions2)
+Middle_table2
+Middle_results2 <- confusionMatrix(table(Middle_test$POS, Middle_predictions2))
+Middle_results2
+varImp(Middle.rf2)
+```
+
+## Middle Random Forest Model 2
+
+In the code above, a random forest model for the Middle data was created using the high four variables from the prior Random Forest model. The results showed a 69.0% accuracy rate with 2,818 observations correctly predicting 2B and 2,145 observations correctly predicting SS. The top 4 variables with the most importance were E, InnOuts, A, and PO. The Kappa value for this random forest model was 0.38. This would indicate that there is a fair agreement amongst the model and results.
+
+```{r Middle_ts}
+MiddleG.ts <- ts(Middle$G, start = c(1901), end = (2019), frequency = 4)
+head(MiddleG.ts)
+plot.ts(MiddleG.ts, main = "Middle Game Time Series")
+```
+## MiddleG.ts Time Series Graph
+
+In the code above, a graph of the MiddleG.ts time series was created.
+
+```{r ADF_Middle}
+adf.test(MiddleG.ts)
+```
+
+## ADF Test for Middle Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the Middle.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r Middle_fit3}
+MiddleG <- auto.arima(MiddleG.ts)
+MiddleG.model <- Box.test(MiddleG$residuals, type = "Ljung-Box")
+MiddleG.model
+```
+
+
+## Ljung-Box Test for Middle.ts Model
+
+In the code above, the Corner.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.988, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r fcast5_predictions}
+MiddleGcast <- forecast(MiddleG, 20)
+summary(MiddleGcast)
+plot(MiddleGcast)
+```
+## Fcast5 Predictions
+
+In the code above, the predictions for the MiddleGcast model was conducted. The high 80% value was 93 and the high 95% value was roughly 125.
+
+```{r fcast12_predictions}
+MidG <- forecast(Middle$G, 100)
+summary(MidG)
+plot(MidG)
+```
+
+## fcast12 Predictions
+
+In the code above, the next 100 observations for number of games by Middle data were predicted. The high 80% was roughly 103 games and the high 95% was roughly roughly 136 games.
+
+
+```{r MiddlePO_ts}
+MiddlePO.ts <- ts(Middle$PO, start = c(1901), end = (2019), frequency = 4)
+head(MiddlePO.ts)
+plot.ts(MiddlePO.ts, main = "Middle Putout Time Series")
+```
+## MiddlePO.ts Time Series graph
+
+In the code above, a graph of the MiddlePO.ts time series was created.
+
+```{r ADF_MiddlePO}
+adf.test(MiddlePO.ts)
+```
+
+
+## ADF Test for Middle Time Series
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the MiddlePO.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r MiddlePO_results}
+MiddlePO <- auto.arima(MiddlePO.ts)
+MiddlePO.model <- Box.test(MiddlePO$residuals, type = "Ljung-Box")
+MiddlePO.model
+```
+
+## Ljung-Box Test for MiddlePO.ts Model
+
+In the code above, the MiddlePO.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.989, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r fcast5_predictions}
+MiddlePOcast <- forecast(MiddlePO, 20)
+summary(MiddlePOcast)
+plot(MiddlePOcast)
+```
+## MiddlePOCast Predictions
+
+In the code above, the predictions for the MiddlePOcast model was conducted. The high 80% value was 216 and the high 95% value was roughly 290.
+
+```{r MidPO_forecast}
+MidPO <- forecast(Middle$PO, 100)
+summary(MidPO)
+plot(MidPO)
+```
+
+## MidPO Predictions
+
+In the code above, the predictions for number of put outs by Middle data were predicted. The high 80% was roughly 176 putouts and the high 95% was roughly 243 putouts.
+
+```{r MiddleE_graph}
+MiddleE.ts <- ts(Middle$E, start = c(1901), end = (2019), frequency = 4)
+head(MiddleE.ts)
+plot.ts(MiddleE.ts, main = "Middle Error Time Series")
+```
+## MiddleE.ts Time Series Graph
+
+In the code above, the MiddleE.ts time series graph was created.
+
+```{r ADF_MiddleE}
+adf.test(MiddleE.ts)
+```
+
+## ADF Test for MiddleE Time Series
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the MiddleE.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r MiddleE_model}
+MiddleE <- auto.arima(MiddleE.ts)
+MiddleE.model <- Box.test(MiddleE$residuals, type = "Ljung-Box")
+MiddleE.model
+```
+
+## Ljung-Box Test for MiddleE.ts Model
+
+In the code above, the MiddleE.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.627, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r MiddleE_cast}
+MiddleEcast <- forecast(MiddleE, 20)
+summary(MiddleEcast)
+plot(MiddleEcast)
+```
+
+## MiddleECast Predictions
+
+In the code above, the predictions for the MiddleEcast model was conducted. The high 80% value was 26 and the high 95% value was roughly 35.
+
+```{r MidE_forecast}
+MidE <- forecast(Middle$E, 100)
+summary(MidE)
+plot(MidE)
+```
+
+## MidE Predictions
+
+In the code above, the next 100 observations for number of errors by Middle data were predicted. The high 80% was roughly 18 errors and the high 95% was roughly 26 errors.
+
+```{r MiddleInnOuts_graph}
+MiddleInnOuts.ts <- ts(Middle$InnOuts, start = c(1901), end = (2019), frequency = 4)
+head(MiddleInnOuts.ts)
+plot.ts(MiddleInnOuts.ts, main = "Middle InnOuts Time Series")
+```
+##MiddleInnOuts.ts Time Series Graph
+
+In the code above, a graph of the MiddleInnOuts.ts time series was created.
+
+```{r ADF_MiddleInnOuts}
+adf.test(MiddleInnOuts.ts)
+```
+
+## ADF Test for MiddleInnOuts Time Series
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the MiddleInnOuts.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r MiddleInnOuts_model}
+MiddleInnOuts <- auto.arima(MiddleInnOuts.ts)
+MiddleInnOuts.model <- Box.test(MiddleInnOuts$residuals, type = "Ljung-Box")
+MiddleInnOuts.model
+```
+
+## Ljung-Box Test for MiddleInnOuts.ts Model
+
+In the code above, the MiddleInnOuts.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.997, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r MiddleInnOutscast}
+MiddleInnOutscast <- forecast(MiddleInnOuts, 20)
+summary(MiddleInnOutscast)
+plot(MiddleInnOutscast)
+```
+
+## MiddleInnOutsCast Predictions
+
+In the code above, the predictions for the MiddleInnOutscast model was conducted. The high 80% value was 2,279 and the high 95% value was roughly 3,000.
+
+```{r MidInnOuts_forecast}
+MidInnOuts <- forecast(Middle$InnOuts, 100)
+summary(MidInnOuts)
+plot(MidInnOuts)
+```
+
+## MidInnOuts Predictions
+
+In the code above, the next 100 observations for number of innouts by Middle data were predicted. The high 80% was roughly 2,396 innouts and the high 95% was roughly 3,145 innouts.
+
+```{r MiddleA_graph}
+MiddleA.ts <- ts(Middle$A, start = c(1901), end = (2019), frequency = 4)
+head(MiddleA.ts)
+plot.ts(MiddleA.ts, main = "Middle Assists Time Series")
+```
+
+## MiddleA Time Series Graph
+
+In the code above, the MiddleA.ts time series graph was created.
+
+```{r ADF_MiddleA}
+adf.test(MiddleA.ts)
+```
+
+## ADF Test for MiddleA Time Series
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the MiddleA.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r MiddleA_model}
+MiddleA <- auto.arima(MiddleA.ts)
+MiddleA.model <- Box.test(MiddleA$residuals, type = "Ljung-Box")
+MiddleA.model
+```
+
+
+## Ljung-Box Test for MiddleA.ts Model
+
+In the code above, the MiddleA.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.988, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r MiddleAcast}
+MiddleAcast <- forecast(MiddleA, 20)
+summary(MiddleAcast)
+plot(MiddleAcast)
+```
+
+## MiddleACast Predictions
+
+In the code above, the predictions for the MiddleAcast model was conducted. The high 80% value was 273 and the high 95% value was roughly 366.
+
+```{r MidA_forecast}
+MidA <- forecast(Middle$A, 100)
+summary(MidA)
+plot(MidA)
+```
+## MidA Predictions
+
+In the code above, the next 100 observations for number of assists by Middle data were predicted. The high 80% was roughly 288 assists and the high 95% was roughly 388 assists.
+
+
+```{r middle_subset}
+M<- y[c(3,6:13)]
+summary(M)
+colSums(is.na(M))
+M$POS <- factor(M$POS)
+```
+
+## Variable Selection for M Data
+
+In the code above, the y data was renamed as M and the following variables were chosen to conduct machine learning models: stint, POS, G, GS, InnOuts, PO, A, E, and DP. There are no missing values in the M data.
+
+```{r M_prep}
+set.seed(123)
+samp4 <- sample(nrow(M), 0.7*nrow(M)) 
+M_train <- M[samp4, ]
+M_test <- M[-samp4, ]
+```
+
+
+## Data Preparation for Machine Learning Models for M Data
+
+In the code above, the M data was split into a 70:30 ratio. The datasets were named M_train and M_test.
+
+```{r M_linear}
+M_svm <- svm(POS ~. , data=M_train, type = 'C-classification',  kernel = 'linear', cost = 1, gamma = 1/ncol(M_train))
+summary(M_svm)
+M_prediction <- predict(M_svm, M_test, type = "POS")
+M.table = table(M_test$POS, M_prediction)
+M.table
+M_confusion<- confusionMatrix(M.table)
+M_confusion
+plot(M_prediction)
+accuracy(M_test$POS, M_prediction)
+ce(M_test$POS,M_prediction)
+```
+## Linear Machine Model for M Data
+
+In the code above, a linear machine model using the M data was created. The model showed an accuracy rate of 68.2% based on position. The model showed that 3,202 observations were correctly predicted as 2B and 1,265 observations were correctly predicted by SS. The positive accuracy rate is 68.2% and the classification error rate was 31.8%. The Kappa value for this model was 0.34. This would indicate that there is a fair agreement of the results from the model.
+
+```{r M_radial}
+M_svm2 <- svm(POS ~. , data=M_train, type = 'C-classification',  kernel = 'radial', cost = 1, gamma = 1/ncol(M_train))
+summary(M_svm2)
+M_prediction2 <- predict(M_svm2, M_test, type = "POS")
+M.table2 = table(M_test$POS, M_prediction2)
+M.table2
+M_confusion2<- confusionMatrix(M.table2)
+M_confusion2
+plot(M_prediction2)
+accuracy(M_test$POS, M_prediction2)
+ce(M_test$POS,M_prediction2)
+```
+
+## Radial Machine Model for M Data
+
+In the code above, a radial machine model using the M data was created. The model showed an accuracy rate of 69.2% based on position. The model showed that 3,116 observations were correctly predicted as 2B and 1,415 observations were correctly predicted by SS. The positive accuracy rate was 69.2% and the classification error rate was 30.8%. The Kappa value for this model was 0.360. This would indicate that there is a fair agreement of the results from the model.
+
+```{r M_polynomial}
+M_svm3 <- svm(POS ~. , data=M_train, type = 'C-classification',  kernel = 'polynomial', cost = 1, gamma = 1/ncol(M_train))
+summary(M_svm3)
+M_prediction3 <- predict(M_svm3, M_test, type = "POS")
+M.table3 = table(M_test$POS, M_prediction3)
+M.table3
+M_confusion3<- confusionMatrix(M.table3)
+M_confusion3
+plot(M_prediction3)
+accuracy(M_test$POS, M_prediction3)
+ce(M_test$POS,M_prediction3)
+```
+## Polynomial Machine Model for M Data
+
+In the code above, a polynomial machine model using the M data was created. The model showed an accuracy rate of 61.0% based on position. The model showed that 3,493 observations were correctly predicted as 2B and 497 observations were correctly predicted by SS. The positive accuracy rate was 61.0% and the classification error rate was 39.0%. The Kappa value for this model was 0.16. This would indicate that there is a slight agreement of the results of the model.
+
+```{r M_knn}
+indexes4=createDataPartition(M$POS, p=.7, list = F)
+train4 = M[indexes4, ]
+test4 = M[-indexes4, ]
+xtrain4 = train4[,-2]
+ytrain4 = train4[,2]
+xtest4 = test4[,-2]
+ytest4 = test4[,2]
+yhat4= knn(xtrain4, xtest4, ytrain4, k=5)
+cm4 <- confusionMatrix(ytest4, yhat4)
+print(cm4)
+```
+
+## kNN Model for Middle Data
+
+In the code above, a kNN model with five nearest neighbors was created using the M data. The accuracy rate of this model was 65.6%. The model showed that 2,532 observations were correctly predicted as 2B and 1,740 observations were correctly predicted as SS. The Kappa value for this model was 0.300. This would indicate that there is a fair agreement of the results of the model.
+
+```{r M_rf}
+M.rf <- randomForest(factor(M_train$POS)~stint+G+GS+InnOuts+PO+A+E+DP, data = M_train)
+M.rf
+plot(M.rf, uniform = TRUE, branch = 1, margin= 0.1)
+
+M_predictions = predict(M.rf, M_test, type="class")
+M_table <- table(M_test$POS, M_predictions)
+M_table
+M_results <- confusionMatrix(table(M_test$POS, M_predictions))
+M_results
+varImp(M.rf)
+```
+## M Random Forest Model
+
+In the code above, a random forest model for the M data was created. The results showed a 69.2% accuracy rate with 2,806 observations correctly predicting 2B and 1,723 observations correctly predicting SS. The top 4 variables with the most importance were G, InnOuts, A, and PO. The Kappa value for this model was 0.370. This would indicate that their is a fair agreement of the results of the model.
+
+```{r M_rf2}
+M.rf2 <- randomForest(factor(M_train$POS)~G+InnOuts+PO+A, data = M_train)
+M.rf2
+plot(M.rf2, uniform = TRUE, branch = 1, margin= 0.1)
+
+M_predictions2 = predict(M.rf2, M_test, type="class")
+M_table2 <- table(M_test$POS, M_predictions2)
+M_table2
+M_results2 <- confusionMatrix(table(M_test$POS, M_predictions2))
+M_results2
+varImp(M.rf2)
+```
+
+## M Random Forest Model 2
+
+In the code above, a random forest model for the M data was created looking at the four most important variables from the original model. The results showed a 65.4% accuracy rate with 2,599 observations correctly predicting 2B and 1,684 observations correctly predicting SS. The top 4 variables with the most importance were G, InnOuts, A, and PO. The Kappa value for this model was 0.300. This would indicate that there is a fair agreement of the results in the model.
+
+```{r M_ts}
+MG.ts <- ts(M$G, start = c(1901), end = (2019), frequency = 4)
+head(MG.ts)
+plot.ts(MG.ts, main = "M Games Time Series")
+```
+## Graph of M.ts
+
+In the code above, a graph of the MG.ts time series was created.
+
+```{r M_ADF}
+adf.test(MG.ts)
+```
+
+## ADF Test for M Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the M.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r MG_model}
+MG <- auto.arima(MG.ts)
+MG.model <- Box.test(MG$residuals, type = "Ljung-Box")
+MG.model
+```
+
+## Ljung-Box Test for M.ts Model
+
+In the code above, the Corner.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.824, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r MGcast}
+MGcast <- forecast(MG, 20)
+summary(MGcast)
+plot(MGcast)
+```
+
+## Fcast6 Predictions
+
+In the code above, the MGcast predictions were created. The high 80% value was 57 and the high 95% value was 75.
+
+```{r MG_Forecast}
+MGforecast <- forecast(M$G, 100)
+summary(MGforecast)
+plot(MGforecast)
+```
+
+## MGforecast Predictions
+
+In the code above, the next 100 observations for the number of games played by M positions were predicted. The high 80% was 111 games and the high 95% was 148 games.
+
+```{r MPO_graph}
+MPO.ts <- ts(M$PO, start = c(1901), end = (2019), frequency = 4)
+head(MPO.ts)
+plot.ts(MPO.ts, main = "M Putouts Time Series")
+```
+## MPO.ts Time Series Graph
+
+In the code above, a graph of the MPO time series was created.
+
+```{r ADF_MPO}
+adf.test(MPO.ts)
+```
+
+## ADF Test for MPO Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the MPO.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r MPO_model}
+MPO <- auto.arima(MPO.ts)
+MPO.model <- Box.test(MPO$residuals, type = "Ljung-Box")
+MPO.model
+```
+
+## Ljung-Box Test for MPO.ts Model
+
+In the code above, the MPO.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.140, which is larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r MPOcast}
+MPOcast <- forecast(MPO, 20)
+summary(MPOcast)
+plot(MPOcast)
+```
+
+
+## MPOcast Predictions
+
+In the code above, the MPOcast predictions were created. The high 80% value was 130 and the high 95% value was 174.
+
+```{r MPOforecast}
+MPOforecast <- forecast(M$PO, 100)
+summary(MPOforecast)
+plot(MPOforecast)
+```
+## MPOforecast Predictions
+
+In the code above, the next 100 observations for the number of putouts played by M positions were predicted. The high 80% was 151 putouts and the high 95% was 206 putouts.
+
+```{r MInnOuts_graph}
+MInnOuts.ts <- ts(M$InnOuts, start = c(1901), end = (2019), frequency = 4)
+head(MInnOuts.ts)
+plot.ts(MInnOuts.ts, main = "M InnOuts Time Series")
+```
+## MInnOuts Time Series Graph
+
+In the code above, the MInnOuts.ts time series graph was created.
+
+```{r ADF_MInnOuts}
+adf.test(MInnOuts.ts)
+```
+
+## ADF Test for MInnOuts Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the MInnOuts.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r MInnOuts_model}
+MInnOuts <- auto.arima(MInnOuts.ts)
+MInnOuts.model <- Box.test(MInnOuts$residuals, type = "Ljung-Box")
+MInnOuts.model
+```
+
+## Ljung-Box Test for MPO.ts Model
+
+In the code above, the MInnOuts.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.877, which is larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r MInnOutscast}
+MInnOutscast <- forecast(MInnOuts, 20)
+summary(MInnOutscast)
+plot(MInnOutscast)
+```
+## MInnOutscast Predictions
+
+In the code above, the MInnOutscast predictions were created. The high 80% value was 1,320 and the high 95% value was 1,645.
+
+```{r MInnOuts_forecast}
+MInnOutsforecast <- forecast(M$InnOuts, 100)
+summary(MInnOutsforecast)
+plot(MInnOutsforecast)
+```
+
+## MInnOutsforecast Predictions
+
+In the code above, the next 100 observations for the number of innouts played by M positions were predicted. The high 80% was 2,258 innouts and the high 95% was 2,933 innouts.
+
+```{r MA_graph}
+MA.ts <- ts(M$A, start = c(1901), end = (2019), frequency = 4)
+head(MA.ts)
+plot.ts(MA.ts, main = "M Assists Time Series")
+```
+## MA.ts Time Series Graph
+
+In the code above, a graph of the MA.ts time series was created.
+
+```{r ADF_MA}
+adf.test(MA.ts)
+```
+
+## ADF Test for MA Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the MA.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r MA_model}
+MA <- auto.arima(MA.ts)
+MA.model <- Box.test(MA$residuals, type = "Ljung-Box")
+MA.model
+```
+
+## Ljung-Box Test for MA.ts Model
+
+In the code above, the MA.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.842, which is larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r MAcast}
+MAcast <- forecast(MA, 20)
+summary(MAcast)
+plot(MAcast)
+```
+
+## MAcast Predictions
+
+In the code above, the MAcast predictions were created. The high 80% value was 160 and the high 95% value was 212.
+
+```{r MAforecast}
+MAforecast <- forecast(M$A, 100)
+summary(MAforecast)
+plot(MAforecast)
+```
+
+## MAforecast Predictions
+
+In the code above, the next 100 observations for the number of assists played by M positions were predicted. The high 80% was 252 assists and the high 95% was 333 assists.
+
+```{r OFC_data}
+Fielding3_C <- filter(Fielding3, POS=="C")
+Fielding3_OF <- filter(Fielding3, POS=="OF")
+Fielding3_OFC <- rbind(Fielding3_C, Fielding3_OF)
+str(Fielding3_OFC)
+summary(Fielding3_OFC)
+sum(is.na(Fielding3_OFC))
+```
+
+## OFC Data
+
+In the code above, the Fielding3_C and Fielding3_OF datasets were merged into one that was renamed 'Fielding3_OFC'. There are no missing values in 'Fielding3_OFC'. There are 38,331 observations in the dataset.
+
+```{r boxplot_OFC}
+boxplot(Fielding3_OFC$stint, main ="Boxplot of Outfield and Catcher Stint Data")
+stint5 <- boxplot.stats(Fielding3_OFC$stint)$out
+doutliers <- boxplot(Fielding3_OFC$stint)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$stint %in% doutliers),]
+boxplot(ofc$stint, main = "Boxplot of Outfield and Catcher Stint Data")
+
+boxplot(Fielding3_OFC$G, main = "Boxplot of Outfield and Catcher Game Data")
+OFCG <- boxplot.stats(Fielding3_OFC$G)$out
+doutliers2 <- boxplot(Fielding3_OFC$G)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$G %in% doutliers2),]
+boxplot(ofc$G, main = "Boxplot of Outfield and Catcher Game Data", ylim =c(1,164))
+
+boxplot(Fielding3_OFC$GS, main = "Boxplot of Outfield and Catcher Game Started Data")
+OFCGS <- boxplot.stats(Fielding3_OFC$GS)$out
+doutliers3 <- boxplot(Fielding3_OFC$GS)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$GS %in% doutliers3),]
+boxplot(ofc$GS, main = "Boxplot of Outfield and Catcher Game Started Data")
+
+boxplot(Fielding3_OFC$PB, main = "Boxplot of Outfield and Catcher Pass Ball Data")
+OFCPB <- boxplot.stats(Fielding3_OFC$PB)$out
+doutliers4 <- boxplot(Fielding3_OFC$PB)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$PB %in% doutliers4),]
+boxplot(ofc$PB, main = "Boxplot of Outfield and Catcher Pass Ball Data")
+
+boxplot(Fielding3_OFC$WP, main = "Boxplot of Outfield and Catcher Wild Pitch Data")
+OFCWP<- boxplot.stats(Fielding3_OFC$WP)$out
+doutliers5 <- boxplot(Fielding3_OFC$WP)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$WP %in% doutliers5),]
+boxplot(ofc$WP, main = "Boxplot of Outfield and Catcher Wild Pitch Data")
+
+
+boxplot(Fielding3_OFC$SB, main = "Boxplot of Outfield and Catcher Stolen Base Data")
+OFCSB <- boxplot.stats(Fielding3_OFC$SB)$out
+doutliers6 <- boxplot(Fielding3_OFC$SB)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$SB %in% doutliers6),]
+boxplot(ofc$A, main = "Boxplot of Outfield and Catcher Stolen Base Data")
+
+
+boxplot(Fielding3_OFC$CS, main = "Boxplot of Outfield and Catcher Caught Stealing Data")
+OFCCS <- boxplot.stats(Fielding3_OFC$CS)$out
+doutliers7 <- boxplot(Fielding3_OFC$CS)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$CS %in% doutliers7),]
+boxplot(ofc$CS, main = "Boxplot of Outfield and Catcher Caught Stealing Data")
+
+
+boxplot(Fielding3_OFC$E, main = "Boxplot of Outfield and Catcher Error Data")
+OFCE <- boxplot.stats(Fielding3_OFC$E)$out
+doutliers8 <- boxplot(Fielding3_OFC$E)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$E %in% doutliers8),]
+boxplot(ofc$E, main = "Boxplot of Outfield and Catcher Error Data")
+
+boxplot(Fielding3_OFC$DP, main = "Boxplot of Outfield and Catcher Double Play Data")
+OFCDP <- boxplot.stats(Fielding3_OFC$DP)$out
+doutliers9 <- boxplot(Fielding3_OFC$DP)$out
+ofc<-Fielding3_OFC
+ofc<- ofc[-which(ofc$DP %in% doutliers9),]
+boxplot(ofc$DP, main = "Boxplot of Outfield and Catcher Caught Double Play Data")
+
+summary(ofc)
+sum(is.na(ofc))
+
+```
+
+## Removing Outliers from ofc Data
+
+In the code above, the outliers were removed from the Fielding3_OFC data and the data was renamed ofc. The ofc data has 35,527 observations. There are no missing values in the ofc data.
+
+```{r OFC_data}
+OFC <- Fielding3_OFC[c(3,6:13)]
+summary(OFC)
+colSums(is.na(OFC))
+OFC$POS <- factor(OFC$POS)
+```
+
+## ofc Data
+
+In the code above, the OFC data was created and the following variables were used: stint, POS, G, GS, InnOuts, PO, A, E, and DP.
+
+```{r OFC_prep}
+set.seed(123)
+samp5 <- sample(nrow(OFC), 0.7*nrow(OFC)) 
+OFC_train <- OFC[samp5, ]
+OFC_test <- OFC[-samp5, ]
+```
+
+## Machine Learning Data Preparation for ofc
+
+In the code above, the OFC data was prepared for machine learning with a 70:30 ratio.
+
+```{r OFC_linear}
+OFC_svm <- svm(POS ~. , data=OFC_train, type = 'C-classification',  kernel = 'linear', cost = 1, gamma = 1/ncol(OFC_train))
+summary(OFC_svm)
+OFC_prediction <- predict(OFC_svm, OFC_test, type = "POS")
+OFC.table = table(OFC_test$POS, OFC_prediction)
+OFC.table
+OFC_confusion<- confusionMatrix(OFC.table)
+OFC_confusion
+plot(OFC_prediction)
+accuracy(OFC_test$POS, OFC_prediction)
+ce(OFC_test$POS,OFC_prediction)
+```
+
+## Linear Machine Learning Model for ofc
+
+In the code above, a linear machine learning model for the OFC data was created. The accuracy rate of the model was 94.2%. The model correctly predicted 2,614 observations for C and 8,222 observations for OF. The positive accuracy rate was 94.2% and the error classification rate was 5.8%. The Kappa value for this model was 0.85. This would indicate that there is a perfect agreement of the results in the model.
+
+```{r OFC_radial}
+OFC_svm2 <- svm(POS ~. , data=OFC_train, type = 'C-classification',  kernel = 'radial', cost = 1, gamma = 1/ncol(OFC_train))
+summary(OFC_svm2)
+OFC_prediction2 <- predict(OFC_svm2, OFC_test, type = "POS")
+OFC.table2 = table(OFC_test$POS, OFC_prediction2)
+OFC.table2
+OFC_confusion2<- confusionMatrix(OFC.table2)
+OFC_confusion2
+plot(OFC_prediction2)
+accuracy(OFC_test$POS, OFC_prediction2)
+ce(OFC_test$POS,OFC_prediction2)
+```
+
+## Radial Machine Learning Model for ofc
+
+In the code above, a radial machine learning model for the OFC data was created. The accuracy rate of the model was 94.0%. The model correctly predicted 2,572 observations for C and 8,233 observations for OF. The positive classification rate was 94.0% and the error classification rate was 6.0%. The Kappa value for this model was 0.84. This would indicate that there is a perfect agreement of the results of the model.
+
+
+```{r OFC_polynomial}
+OFC_svm3 <- svm(POS ~. , data=OFC_train, type = 'C-classification',  kernel = 'polynomial', cost = 1, gamma = 1/ncol(OFC_train))
+summary(OFC_svm3)
+OFC_prediction3 <- predict(OFC_svm3, OFC_test, type = "POS")
+OFC.table3 = table(OFC_test$POS, OFC_prediction3)
+OFC.table3
+OFC_confusion3<- confusionMatrix(OFC.table3)
+OFC_confusion3
+plot(OFC_prediction3)
+accuracy(OFC_test$POS, OFC_prediction3)
+ce(OFC_test$POS,OFC_prediction3)
+```
+
+## Polynomial Machine Learning Model for ofc
+
+In the code above, a polynomial machine learning model for the OFC data was created. The accuracy rate of the model was 90.4%. The model correctly predicted 2,152 observations for C and 8,249 observations for OF. The positive classification rate was 90.4% and the error classification rate was 9.6%. The Kappa value for this model was 0.74. This would indicate that there is a substantial agreement of the results of the model.
+
+```{r OFC_kNN}
+indexes5=createDataPartition(OFC$POS, p=.7, list = F)
+train5 = OFC[indexes5, ]
+test5 = OFC[-indexes5, ]
+xtrain5 = train5[,-2]
+ytrain5 = train5[,2]
+xtest5 = test5[,-2]
+ytest5 = test5[,2]
+yhat5= knn(xtrain5, xtest5, ytrain5, k=5)
+cm5 <- confusionMatrix(ytest5, yhat5)
+print(cm5)
+```
+
+#kNN model with 5 nearest neighbors using OFC Data
+
+In the code above, a kNN model with 5 nearest neighbors was created using the OFC data. The results displayed a 96.2% accuracy rate by position. The results correctly predicted 2,894 observations as C and 8,166 observations as OF. The Kappa value for this model was 0.90. This would indicate that there is a perfect agreement of the results of the model.
+
+```{r OFC_rf}
+OFC.rf <- randomForest(factor(OFC_train$POS)~stint+G+GS+InnOuts+PO+A+E+DP, data = OFC_train)
+OFC.rf
+plot(OFC.rf, uniform = TRUE, branch = 1, margin= 0.1)
+
+OFC_predictions = predict(OFC.rf, OFC_test, type="class")
+OFC_table <- table(OFC_test$POS, OFC_predictions)
+OFC_table
+OFC_results <- confusionMatrix(table(OFC_test$POS, OFC_predictions))
+OFC_results
+varImp(OFC.rf)
+```
+## OFC Random Forest model
+
+In the code above, a random forest model for the OFC data was created. The results showed a 96.4% accuracy rate with 2,888 observations correctly predicting C and 8,201 observations correctly predicting OF. The Kappa value for this model was 0.91. This would indicate that there is a very good agreement of the results of the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+
+```{r OFC_rf2}
+OFC.rf2 <- randomForest(factor(OFC_train$POS)~G+InnOuts+PO+A, data = OFC_train)
+OFC.rf2
+plot(OFC.rf2, uniform = TRUE, branch = 1, margin= 0.1)
+
+OFC_predictions2 = predict(OFC.rf2, OFC_test, type="class")
+OFC_table2 <- table(OFC_test$POS, OFC_predictions2)
+OFC_table2
+OFC_results2 <- confusionMatrix(table(OFC_test$POS, OFC_predictions2))
+OFC_results2
+varImp(OFC.rf2)
+```
+## OFC Random Forest model 2
+
+In the code above, a random forest model for the OFC data was created using the top four variables with the most importance from the prior Random Forest model. The results showed a 96.7% accuracy rate with 2,946 observations correctly predicting C and 8,174 observations correctly predicting OF. The Kappa value for this model was 0.92. This would indicate that there is a very good agreement of the results in the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+
+```{r OFCG_ts}
+OFCG.ts <- ts(OFC$G, start = c(1901), end = (2019), frequency = 4)
+head(OFCG.ts)
+plot.ts(OFCG.ts, main = "OFC Game Time Series")
+```
+## OFC Graph
+
+In the code above, a graph of the OFC.ts time series was created.
+
+```{r OFC_ADF}
+adf.test(OFCG.ts)
+```
+
+## ADF Test for OFC Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the OFC.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r OFCG_model}
+OFCG <- auto.arima(OFCG.ts)
+OFCG.model <- Box.test(OFCG$residuals, type = "Ljung-Box")
+OFCG.model
+```
+
+## Ljung-Box Test for OFC.ts Model
+
+In the code above, the OFC.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.973, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r OFCG_forecast}
+OFCGcast <- forecast(OFCG, 20)
+summary(OFCGcast)
+plot(OFCGcast)
+```
+## OFCGcast Predictions
+
+In the code above, the predictions for OFCGcast were projected. The high 80% value was 87 and the high 95% value was 109.
+
+```{r OFCG_forecast}
+OFCGforecast <- forecast(OFC$G, 100)
+summary(OFCGforecast)
+plot(OFCGforecast)
+```
+
+## OFCG Predictions
+
+In the code above, the predictions for the next 100 entries for the number of games played for the OFC data was determined. The high 80% value was 108 games and the high 95% value was 140 games.
+
+```{r OFCInnOuts_graph}
+OFCInnOuts.ts <- ts(OFC$InnOuts, start = c(1901), end = (2019), frequency = 4)
+head(OFCInnOuts.ts)
+plot.ts(OFCInnOuts.ts, main = "OFC InnOuts Time Series")
+```
+## OFCInnOuts Time Series Graph
+
+In the code above, a graph of the OFCInnOuts time series model was created.
+
+```{r ADF_OFCInnOuts}
+adf.test(OFCInnOuts.ts)
+```
+
+## ADF Test for OFCInnOuts Time Series
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the OFCInnOuts.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r OFCInn_model}
+OFCInn <- auto.arima(OFCInnOuts.ts)
+OFCInn.model <- Box.test(OFCInn$residuals, type = "Ljung-Box")
+OFCInn.model
+```
+
+## Ljung-Box Test for OFC.ts Model
+
+In the code above, the OFCInnOuts.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.973, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r OFCInn_cast}
+OFCInncast <- forecast(OFCInn, 20)
+summary(OFCInncast)
+plot(OFCInncast)
+```
+
+## OFCInncast Predictions
+
+In the code above, the predictions for OFCInncast were projected. The high 80% value was 1,633 and the high 95% value was 2,118.
+
+```{r OFCInn_forecast}
+OFCInnforecast <- forecast(OFC$InnOuts, 100)
+summary(OFCInnforecast)
+plot(OFCInnforecast)
+```
+## OFCInnOuts Predictions
+
+In the code above, the predictions for the next 100 entries for the number of innouts played for the OFC data was determined. The high 80% value was 2,474 innouts and the high 95% value was 3,206 innouts.
+
+```{r OFCA_graph}
+OFCA.ts <- ts(OFC$A, start = c(1901), end = (2019), frequency = 4)
+head(OFCA.ts)
+plot.ts(OFCA.ts, main = "OFC Assists Time Series")
+```
+## OFCA Time Series Graph
+
+In the code above, a graph of the OFCA time series was created.
+
+```{r ADF_OFCA}
+adf.test(OFCA.ts)
+```
+
+## ADF Test for OFCA Time Series
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the OFCA.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r OFCA_model}
+OFCA <- auto.arima(OFCA.ts)
+OFCA.model <- Box.test(OFCA$residuals, type = "Ljung-Box")
+OFCA.model
+```
+
+## Ljung-Box Test for OFCA.ts Model
+
+In the code above, the OFCA.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.952, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r OFCA_cast}
+OFCAcast <- forecast(OFCA, 20)
+summary(OFCAcast)
+plot(OFCAcast)
+```
+
+## OFCAcast Predictions
+
+In the code above, the predictions for OFCAcast were projected. The high 80% value was 107 and the high 95% value was 138.
+
+```{r OFCA_forecast}
+OFCAforecast <- forecast(OFC$A, 100)
+summary(OFCAforecast)
+plot(OFCAforecast)
+```
+## OFCA Predictions
+
+In the code above, the predictions for the next 100 entries for the number of assists created by the OFC data was determined. The high 80% value was 23 assists and the high 95% value was 33 assists.
+
+```{r OFCPO_graph}
+OFCPO.ts <- ts(OFC$PO, start = c(1901), end = (2019), frequency = 4)
+head(OFCPO.ts)
+plot.ts(OFCPO.ts, main = "OFC Putouts Time Series")
+```
+## OFCPO Time Series Graph
+
+In the code above, a graph of the OFCPO time series was created.
+
+```{r ADF_OFCPO}
+adf.test(OFCPO.ts)
+```
+
+## ADF Test for OFCPO Time Series
+
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the OFCPO.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r OFCPO_model}
+OFCPO <- auto.arima(OFCPO.ts)
+OFCPO.model <- Box.test(OFCPO$residuals, type = "Ljung-Box")
+OFCPO.model
+```
+
+
+## Ljung-Box Test for OFCPO.ts Model
+
+In the code above, the OFCPO.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.849, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r OFCPO_cast}
+OFCPOcast <- forecast(OFCPO, 20)
+summary(OFCPOcast)
+plot(OFCPOcast)
+```
+
+## OFCPOcast Predictions
+
+In the code above, the predictions for OFCPOcast were projected. The high 80% value was 430 and the high 95% value was 515.
+
+```{r OFCPO_forecast}
+OFCPOforecast <- forecast(OFC$PO, 100)
+summary(OFCPOforecast)
+plot(OFCPOforecast)
+```
+
+## OFCPO Predictions
+
+In the code above, the predictions for the next 100 entries for the number of putouts created by the OFC data was determined. The high 80% value was 275 putouts and the high 95% value was 378 putouts.
+
+```{r OFC2_data}
+OFC2 <- ofc[c(3,6:13)]
+summary(OFC2)
+colSums(is.na(OFC2))
+OFC2$POS <- factor(OFC2$POS)
+```
+
+## ofc2 Data
+
+In the code above, the OFC2 data was created and the following variables were used: stint, POS, G, GS, InnOuts, PO, A, E, and DP.
+
+
+```{r OFC2_prep}
+set.seed(123)
+samp6 <- sample(nrow(OFC2), 0.7*nrow(OFC2)) 
+OFC2_train <- OFC2[samp6, ]
+OFC2_test <- OFC2[-samp6, ]
+```
+
+## Machine Learning Data Preparation for ofc2
+
+In the code above, the ofc2 data was prepared for machine learning with a 70:30 ratio.
+
+```{r OFC2_linear}
+OFC2_svm <- svm(POS ~. , data=OFC2_train, type = 'C-classification',  kernel = 'linear', cost = 1, gamma = 1/ncol(OFC2_train))
+summary(OFC2_svm)
+OFC2_prediction <- predict(OFC2_svm, OFC2_test, type = "POS")
+OFC2.table = table(OFC2_test$POS, OFC2_prediction)
+OFC2.table
+OFC2_confusion<- confusionMatrix(OFC2.table)
+OFC2_confusion
+plot(OFC2_prediction)
+accuracy(OFC2_test$POS, OFC2_prediction)
+ce(OFC2_test$POS,OFC2_prediction)
+```
+
+## Linear Machine Learning Model for ofc2
+
+In the code above, a linear machine learning model for the ofc2 data was created. The accuracy rate of the model was 93.8%. The model correctly predicted 1,959 observations for C and 8,040 observations for OF. The positive classification rate was 93.8% and the error classification rate was 6.2%. The Kappa value for this model was 0.82. This would indicate that there is a perfect agreement of the results of the model.
+
+```{r OFC2_radial}
+OFC2_svm2 <- svm(POS ~. , data=OFC2_train, type = 'C-classification',  kernel = 'radial', cost = 1, gamma = 1/ncol(OFC2_train))
+summary(OFC2_svm2)
+OFC2_prediction2 <- predict(OFC2_svm2, OFC2_test, type = "POS")
+OFC2.table2 = table(OFC2_test$POS, OFC2_prediction2)
+OFC2.table2
+OFC2_confusion2<- confusionMatrix(OFC2.table2)
+OFC2_confusion2
+plot(OFC2_prediction2)
+accuracy(OFC2_test$POS, OFC2_prediction2)
+ce(OFC2_test$POS,OFC2_prediction2)
+```
+## Radial Machine Learning Model for ofc2
+
+In the code above, a radial machine learning model for the ofc2 data was created. The accuracy rate of the model was 93.8%. The model correctly predicted 1,942 observations for C and 8,054 observations for OF. The positive accuracy rate was 93.8% and the error classification rate was 6.2%. The Kappa value for this model was 0.82. This would indicate that there is a perfect agreement of the results in the model.
+
+```{r OFC2_polynomial}
+OFC2_svm3 <- svm(POS ~. , data=OFC2_train, type = 'C-classification',  kernel = 'polynomial', cost = 1, gamma = 1/ncol(OFC2_train))
+summary(OFC2_svm3)
+OFC2_prediction3 <- predict(OFC2_svm3, OFC2_test, type = "POS")
+OFC2.table3 = table(OFC2_test$POS, OFC2_prediction3)
+OFC2.table3
+OFC2_confusion3<- confusionMatrix(OFC2.table3)
+OFC2_confusion3
+plot(OFC2_prediction3)
+accuracy(OFC2_test$POS, OFC2_prediction3)
+ce(OFC2_test$POS,OFC2_prediction3)
+```
+## Polynomial Machine Learning Model for OFC2
+
+In the code above, a polynomial machine learning model for the ofc2 data was created. The accuracy rate of the model was 90.6%. The model correctly predicted 1,588 observations for C and 8,067 observations for OF. The positive classification rate was 90.6% and the error classification rate was 9.4%. The Kappa value for this model was 0.71. This would be a substantial agreement of the results of the model.
+
+
+```{r OFC2_kNN}
+indexes6=createDataPartition(OFC2$POS, p=.7, list = F)
+train6 = OFC2[indexes6, ]
+test6 = OFC2[-indexes6, ]
+xtrain6 = train6[,-2]
+ytrain6 = train6[,2]
+xtest6 = test6[,-2]
+ytest6 = test6[,2]
+yhat6= knn(xtrain6, xtest6, ytrain6, k=5)
+cm6 <- confusionMatrix(ytest6, yhat6)
+print(cm6)
+```
+
+#kNN model with 5 nearest neighbors using OFC2 Data
+
+In the code above, a kNN model with 5 nearest neighbors was created using the OFC2 data. The results displayed a 96.2% accuracy rate by position. The results correctly predicted 2,262 observations as C and 7,991 observations as OF. The Kappa value for this model was 0.89. This would indicate that there is a perfect agreement of the results in the model.
+
+```{r OFC2_rf}
+OFC2.rf <- randomForest(factor(OFC2_train$POS)~stint+G+GS+InnOuts+PO+A+E+DP, data = OFC2_train)
+OFC2.rf
+plot(OFC2.rf, uniform = TRUE, branch = 1, margin= 0.1)
+
+OFC2_predictions = predict(OFC2.rf, OFC2_test, type="class")
+OFC2_table <- table(OFC2_test$POS, OFC2_predictions)
+OFC2_table
+OFC2_results <- confusionMatrix(table(OFC2_test$POS, OFC2_predictions))
+OFC2_results
+varImp(OFC2.rf)
+```
+## OFC2 Random Forest model
+
+In the code above, a random forest model for the OFC2 data was created. The results showed a 96.1% accuracy rate with 2,214 observations correctly predicting C and 8,028 observations correctly predicting OF. The Kappa value for this model was 0.89. This would indicate that there is a very good agreement of the results in the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+
+
+```{r OFC2_rf2}
+OFC2.rf2 <- randomForest(factor(OFC2_train$POS)~G+InnOuts+PO+A, data = OFC2_train)
+OFC2.rf2
+plot(OFC2.rf2, uniform = TRUE, branch = 1, margin= 0.1)
+
+OFC2_predictions2 = predict(OFC2.rf2, OFC2_test, type="class")
+OFC2_table2 <- table(OFC2_test$POS, OFC2_predictions2)
+OFC2_table2
+OFC2_results2 <- confusionMatrix(table(OFC2_test$POS, OFC2_predictions2))
+OFC2_results2
+varImp(OFC2.rf2)
+```
+
+## OFC2 Random Forest model 2
+
+In the code above, a random forest model for the OFC2 data was created using the top four variables from the prior Random Forest model. The results showed a 96.3% accuracy rate with 2,277 observations correctly predicting C and 7,985 observations correctly predicting OF. The Kappa value for this model was 0.90. This would indicate that there is a very good agreement of the results in the model. The top 4 variables with the most importance were G, InnOuts, A, and PO.
+
+
+```{r OFC2_ts}
+OFC2G.ts <- ts(OFC2$G, start = c(1901), end = (2019), frequency = 4)
+head(OFC2G.ts)
+plot.ts(OFC2G.ts, main = "OFC2 Game Time Series")
+```
+## OFC2G.ts Plot
+
+In the code above, the OFC2G.ts time series plot was created.
+
+```{r OFC2_ADF}
+adf.test(OFC2G.ts)
+```
+
+
+## ADF Test for OFC2 Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the OFC2G.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r OFC2G_model}
+OFC2G <- auto.arima(OFC2G.ts)
+OFC2G.model <- Box.test(OFC2G$residuals, type = "Ljung-Box")
+OFC2G.model
+```
+
+## Ljung-Box Test for OFC.ts Model
+
+In the code above, the OFC2.ts series created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.311, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r OFC2Gcast_predictions}
+OFC2Gcast <- forecast(OFC2G, 20)
+summary(OFC2Gcast)
+plot(OFC2Gcast)
+```
+
+## fcast10 Predictions
+
+In the code above, the OFC2Gcast predictions were created. The high 80% value was 53 and the high 95% value was 69.
+
+```{r OFC2Gforecast_predictions}
+OFC2Gforecast <- forecast(OFC2$G, 100)
+summary(OFC2Gforecast)
+plot(OFC2Gforecast)
+```
+
+## OFC2Gforecast Predictions
+
+In the code above, the next 100 observations for the number of games for OFC2 was predicted. The high 80% was 110 games and the high 95% was 143 games.
+
+```{r OFC2Inn_graph}
+OFC2Inn.ts <- ts(OFC2$InnOuts, start = c(1901), end = (2019), frequency = 4)
+head(OFC2Inn.ts)
+plot.ts(OFC2Inn.ts, main = "OFC2 InnOuts Time Series")
+```
+## OFC2Inn Time Series Graph
+
+In the code above, a graph of the OFC2Inn time series was created.
+
+```{r ADF_OFC2Inn}
+adf.test(OFC2Inn.ts)
+```
+
+## ADF Test for OFC2Inn Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the OFC2Inn.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r OFC2Inn_model}
+OFC2Inn <- auto.arima(OFC2Inn.ts)
+OFC2Inn.model <- Box.test(OFC2Inn$residuals, type = "Ljung-Box")
+OFC2Inn.model
+```
+
+## Ljung-Box Test for OFC2INN Model
+
+In the code above, the OFC2Inn.model created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.280, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r OFC2Inn_cast}
+OFC2Inncast <- forecast(OFC2Inn, 20)
+summary(OFC2Inncast)
+plot(OFC2Inncast)
+```
+
+## OFC2Inn Predictions
+
+In the code above, the OFC2Inncast predictions were created. The high 80% value was 1,250 and the high 95% value was 1,557.
+
+```{r OFC2Inn_forecast}
+OFC2Innforecast <- forecast(OFC2$InnOuts, 100)
+summary(OFC2Innforecast)
+plot(OFC2Innforecast)
+```
+
+## OFC2Innforecast Predictions
+
+In the code above, the next 100 observations for the number of innouts for OFC2 was predicted. The high 80% was 2,422 innouts and the high 95% was 3,125 innouts.
+
+```{r OFC2PO_graph}
+OFC2PO.ts <- ts(OFC2$PO, start = c(1901), end = (2019), frequency = 4)
+head(OFC2PO.ts)
+plot.ts(OFC2PO.ts, main = "OFC2 Putouts Time Series")
+```
+
+## OFC2PO Time Series Graph
+
+In the code above, a graph of the OFC2PO time series was created.
+
+```{r ADF_OFC2PO}
+adf.test(OFC2PO.ts)
+```
+
+## ADF Test for OFC2PO Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the OFC2PO.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r OFC2PO_model}
+OFC2PO <- auto.arima(OFC2PO.ts)
+OFC2PO.model <- Box.test(OFC2PO$residuals, type = "Ljung-Box")
+OFC2PO.model
+```
+
+## Ljung-Box Test for OFC2PO Model
+
+In the code above, the OFC2PO.model created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.440, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r OFC2PO_cast}
+OFC2POcast <- forecast(OFC2PO, 20)
+summary(OFC2POcast)
+plot(OFC2POcast)
+```
+
+## OFC2POcast Predictions
+
+In the code above, the OFC2POcast predictions were created. The high 80% value was 230 and the high 95% value was 302.
+
+```{r OFC2PO_forecast}
+OFC2POforecast <- forecast(OFC2$PO, 100)
+summary(OFC2POforecast)
+plot(OFC2POforecast)
+```
+
+## OFC2POforecast Predictions
+
+In the code above, the next 100 observations for the number of putouts for OFC2 was predicted. The high 80% was 239 putouts and the high 95% was 324 putouts.
+
+```{r OFC2A_graph}
+OFC2A.ts <- ts(OFC2$A, start = c(1901), end = (2019), frequency = 4)
+head(OFC2A.ts)
+plot.ts(OFC2A.ts, main = "OFC2 Assists Time Series")
+```
+## OFC2A Time Series Graph
+
+In the code above, the graph of the OFC2A time series was created.
+
+```{r ADF_OFC2A}
+adf.test(OFC2A.ts)
+```
+
+## ADF Test for OFC2A Time Series
+In the code above, the Augmented Dickey-Fuller Test was conducted to determine if the OFC2A.ts time series was stationary. Here is the null and alternative hypotheses:
+
+Ho: Time series is non-stationary 
+Ha: Time series is stationary
+
+The p-value is 0.01, which is significantly lower than our p-value of 0.05. Since this is the case, we can reject the null hypothesis that the time series is non-stationary and accept the alternative hypotheiss that the time series is stationary.
+
+```{r OFC2A_model}
+OFC2A <- auto.arima(OFC2A.ts)
+OFC2A.model <- Box.test(OFC2A$residuals, type = "Ljung-Box")
+OFC2A.model
+```
+
+
+## Ljung-Box Test for OFC2A Model
+
+In the code above, the OFC2A.model created a fit model. The Ljung-Box method was then conducted. Here are the null and alternative hypothesis:
+
+Ho: The residuals are independently distributed.
+Ha: The residuals are not independently distributed.
+
+The p-value of the test is 0.482, which is much larger than 0.05. Thus, we fail to reject the null hypothesis of the test and conclude that the residual data values are independently distributed and the model exhibits a fit.
+
+```{r OFC2A_cast}
+OFC2Acast <- forecast(OFC2A, 20)
+summary(OFC2Acast)
+plot(OFC2Acast)
+```
+
+## OFC2Acast Predictions
+
+In the code above, the OFC2PAcast predictions were created. The high 80% value was 60 and the high 95% value was 79.
+
+```{r OFC2A_forecast}
+OFC2Aforecast <- forecast(OFC2$A, 100)
+summary(OFC2Aforecast)
+plot(OFC2Aforecast)
+```
+
+## OFC2Aforecast Predictions
+
+In the code above, the next 100 observations for the number of assists for OFC2 was predicted. The high 80% was 15 assists and the high 95% was 21 assists.
