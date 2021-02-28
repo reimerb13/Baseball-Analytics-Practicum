@@ -386,7 +386,7 @@ Ho: The residuals are independently distributed.
 
 Ha: The residuals are not independently distributed.
 
-A forecast of the next 20 years for the residuals was conducted and then the next 20 observations for the data related to the specific variable was predicted.
+A forecast of the next 20 years for the residuals was conducted and then the next 100 observations for the data related to the specific variable was predicted.
 
 Predictions for Corner Time Series Data
 
@@ -428,7 +428,7 @@ Ho: The residuals are independently distributed.
 
 Ha: The residuals are not independently distributed.
 
-A forecast of the next 20 years for the residuals was conducted and then the next 20 observations for the data related to the specific variable was predicted.
+A forecast of the next 20 years for the residuals was conducted and then the next 100 observations for the data related to the specific variable was predicted.
 
 Results of Middle Time Series Data
 
@@ -472,7 +472,7 @@ Ho: The residuals are independently distributed.
 
 Ha: The residuals are not independently distributed.
 
-A forecast of the next 20 years for the residuals was conducted and then the next 20 observations for the data related to the specific variable was predicted.
+A forecast of the next 20 years for the residuals was conducted and then the next 100 observations for the data related to the specific variable was predicted.
 
 Results of OFC Time Series Data
 
