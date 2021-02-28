@@ -486,3 +486,13 @@ Results of OFC2 Time Series Data
 |Residuals of OFC2A.ts|60|79|28.7|
 |Assists of OFC2A.ts|15|21|9.9|
 
+# Conclusions from Results
+
+
+# References
+
+Chen, Y.S. (2019). Interpretation of Kappa Values. Retrieved February 23, 2021 from 
+		https://towardsdatascience.com/interpretation-of-kappa-values-2acd1ca7b18f.
+Lahman, S. (2021). Fielding [Data set]. Sean Lahman. Retrieved January 17, 2021 from
+	http://www.seanlahman.com/baseball-archive/statistics/.
+R-bloggers.com. (2020). How to Remove Outliers in R. John. Retrieved February 3, 2021 from https://www.r-bloggers.com/2020/01/how-to-remove-outliers-in-r/.
