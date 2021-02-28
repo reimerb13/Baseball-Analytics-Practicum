@@ -101,9 +101,13 @@ Machine learning models were created for Corner, Corner2, Middle, M, OFC, and OF
 
 <0: No agreement
 0 —.20: Slight
+
 .21 —.40: Fair
+
 .41 —.60: Moderate
+
 .61 —.80: Substantial
+
 .81–1.0: Perfect
 
 Corner SVM Model Results
