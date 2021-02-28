@@ -453,8 +453,8 @@ Results of M Time Series Data
 |Games of MG.ts|111|148|41.5|
 |Residuals of MPO.ts|130|174|61.3|
 |Putouts of MPO.ts|151|206|81.1|
-|Residuals of MiddleInnOuts.ts|1,320|1,645|473.9|
-|Inn Outs of MiddleInnOuts.ts|2,258|2,933|995.3|
+|Residuals of MInnOuts.ts|1,320|1,645|473.9|
+|Inn Outs of MInnOuts.ts|2,258|2,933|995.3|
 |Residuals of MA.ts|160|212|76.7|
 |Assists of MA.ts|252|333|120.2|
 
