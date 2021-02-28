@@ -100,6 +100,7 @@ Before outliers were removed, the Fielding3_OFC dataset contained 38,331 observa
 Machine learning models were created for Corner, Corner2, Middle, M, OFC, and OFC2. The variables used to create the models were stint, POS, G, GS, InnOuts, PO, A, E, and DP. There were three types of models created looking at each data: linear, radial, and polynomial. The data was sampled into a 70:30 ratio for training and testing datasets. The Kappa value, accuracy rate, and error rate were calculated for each model based on each dataset. This is the interpretation of the Kappa value:
 
 <0: No agreement
+
 0 —.20: Slight
 
 .21 —.40: Fair
