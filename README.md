@@ -502,9 +502,9 @@ Results of OFC2 Time Series Data
 
 # Conclusions from Results
 
-The results show that there wasn't a huge discrepancy in the accuracy results for SVM models, kNN models, and Random Forest models regardless of whether or not outliers were removed from the dataset. The Random Forest models determined that there were some differences of which variables were important in relation to a player's effectiveness on the field. 
-
 After viewing the forecast models for variables in the different datasets, it's evident that the Corner fielding positions (1B and 3B) would be the first positions that a front office should look at replacement due to the number of games played. The second set of positions that a front office should look at by number of games played would be the OFC fielding positions (OF and C). The third and final set of positions that a front office should look at by number of games played would be the Middle fielding positions (2B and SS).
+
+The results show that there wasn't a huge discrepancy in the accuracy results for SVM models, kNN models, and Random Forest models regardless of whether or not outliers were removed from the dataset. The Random Forest models determined that there were some differences of which variables were important in relation to a player's effectiveness on the field. 
 
 As an organization, I would recommend to focus on having players solidified at the Middle fielding positions that can be reliable and effective for many years to come. I would have confidence in the OFC fielding positions but I would draft and develop at these specific positions once some dropoff in production is viewed. Finally, I would recommend to constantly draft and develop Corner positions since they appear to be the most unreliable on the team.
 
